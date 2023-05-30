@@ -20,8 +20,8 @@ mapea <- function(maizSelecto){
     leaflet() %>%
     addProviderTiles(providers$Stamen.Terrain) %>%
     addAwesomeMarkers(lat = maizSelecto$Latitud, lng = maizSelecto$Longitud,
-                      #icon = icons,
-                      color = maizSelecto$RazaPrimaria,
+                      icon = icons,
+                      #color = maizSelecto$RazaPrimaria,
                       group = "maizSelecto",
                       popup = maizSelecto$RazaPrimaria) %>%
     addLegend(position = "bottomright",
@@ -30,9 +30,9 @@ mapea <- function(maizSelecto){
 }
 
 # función para filtrar ----
-selecta <- function(database, complejo = "Todos", raza = "Todos", estado = "Todos"){
-  maizBD <- database %>%
-  #maizBD <- bdMaiz %>%
+selecta <- function(database, complejo = "Todos", raza = "Todos"){#, estado = "Todos"){
+  #maizBD <- database %>%
+  maizBD <- bdMaiz %>%
     dplyr::select(Id, ComplejoRacial, RazaPrimaria, Estado,
                   ValidacionGeografica, Latitud, Longitud,
                   NumeroMazorcas, AlturaMazorca, LongitudMazorca, DiametroMazorca, HilerasMazorca,
@@ -43,9 +43,11 @@ selecta <- function(database, complejo = "Todos", raza = "Todos", estado = "Todo
                   Insectos, Malezas, ProblemasAlmacenamiento, ControlMecanico,
                     ControlFungicidaBactericida, ControlInsecticida
                   )
-  maizBD <- if(complejo != "Todos"){maizBD[maizBD$ComplejoRacial == complejo,]} else{maizBD}
-  maizBD <- if(raza != "Todos"){maizBD[maizBD$RazaPrimaria == raza,]} else{maizBD}
-  maizBD <- if(estado != "Todos"){maizBD[maizBD$Estado == estado,]} else{maizBD}
+  maizBD <- maizBD[maizBD$ComplejoRacial %in% complejo,]
+  maizBD <- if(any("Todos" %in% raza)){maizBD} else{maizBD[maizBD$RazaPrimaria %in% raza,]}
+  #maizBD <- if(complejo %in% "Todos"){maizBD} else{maizBD[maizBD$ComplejoRacial %in% complejo,]}
+  #maizBD <- if("Todos" %in% raza){maizBD} else{maizBD[maizBD$RazaPrimaria %in% raza,]}
+  #maizBD <- if(estado != "Todos"){maizBD[maizBD$Estado %in% estado,]} else{maizBD}
 
   return(maizBD)
 }

@@ -12,9 +12,13 @@ ComplRaci <- c("Chapalote", "Cónico", "Dentados tropicales", "Ocho hileras",
                "Sierra de Chihuahua", "Tropicales precoces", "Tropicales tardíos",
                "No asociadas a un complejo racial")
 
-# Define UI for application that draws a histogram
-ui <- pagePiling(
+# Define UI
+ui <- function(){
+  tagList(
+    pagePiling(
+      navigation = TRUE,
   sections.color = c("#FFF380", "#FFF380", "#800080", "#FFF380", "#800080"),
+  #sections.color = c("grey30", "grey30", "grey30", "grey30", "grey30"),
   opts = options,
   menu = c(
     "Home" = "home",
@@ -25,7 +29,7 @@ ui <- pagePiling(
   ),
   pageSectionImage(
     center = TRUE,
-    img = "www/img/cover_rs.jpg",
+    img = "./inst/www/img/cover_rs.jpg",
     menu = "home",
     h1("Hola, este es el título"),
     h3("y mi subtítulo")
@@ -34,32 +38,32 @@ ui <- pagePiling(
     center = TRUE,
     menu = "map",
     pageContainer(
-      h2("Maíces nativos en México"),
+      h2("Maíces nativos en México", class = "header shadow-light"),
       br(),
-      fluidRow(column(3,
+      fluidRow(column(4,
                       selectInput("complejo1", label = "Complejo racial",
                                   choices = ComplRaci,
                                   selected = sample(ComplRaci, 1))),
-               column(3,
+               column(4,
                       uiOutput("razaInput")),
-               column(3,
-                      uiOutput("estadoInput")),
-               column(3,
+               # column(3,
+               #        uiOutput("estadoInput")),
+               column(4,
                       actionButton("actualizar", label = "DO NOT CLICK"))
       ),
-      withSpinner(leafletOutput("mapaF"), type = 1)
+      withSpinner(leafletOutput("mapaF", height = "600px"), type = 1)
     )
   ),
   pageSection(
     center = TRUE,
     menu = "plots",
     pageContainer(
-      h2("Detalles con respecto a la data"),
+      h2("Detalles con respecto a la data", class = "header shadow-dark"),
       tabsetPanel(
-        tabPanel("Granos", withSpinner(plotOutput("grafGranos"), type = 1)),
-        tabPanel("Mazorcas", withSpinner(plotOutput("grafMazorcas"), type = 1)),
-        tabPanel("Agricultores", withSpinner(plotOutput("grafAgricultores"), type = 1)),
-        tabPanel("Pros y contras", withSpinner(plotOutput("grafProCon"), type = 1))
+        tabPanel("Granos", withSpinner(plotOutput("grafGranos", height = "600px"), type = 1)),
+        tabPanel("Mazorcas", withSpinner(plotOutput("grafMazorcas", height = "600px"), type = 1)),
+        tabPanel("Agricultores", withSpinner(plotOutput("grafAgricultores", height = "600px"), type = 1)),
+        tabPanel("Pros y contras", withSpinner(plotOutput("grafProCon", height = "600px"), type = 1))
       )
     )
   ),
@@ -67,46 +71,24 @@ ui <- pagePiling(
     center = TRUE,
     menu = "description",
     pageContainer(
-      h2("Para sabe más"),
+      h2("Para saber más", class = "header shadow-light"),
       dataTableOutput("maices")
     )
   ),
   pageSection(
     center = TRUE,
     menu = "about",
-    h2("Acerca de"),
+    h2("Acerca de", class = "header shadow-dark"),
     h3("Proyecto desarrollado por Arturo Sanchez-Porras & Aline Romero-Natale."),
     h4("Una liga aquí para github"),
     h4("Una liga aquí para CONABIO")
   )
 )
+)
+}
+# tags$link(rel = "stylesheet", type = "text/css", href = "./inst/www/css/style.css")
+#   )
 
-
-# ui <- fluidPage(
-#   fluidRow(column(3,
-#                   selectInput("complejo1", label = "Complejo racial",
-#                               choices = ComplRaci,
-#                               selected = sample(ComplRaci, 1))),
-#            column(3,
-#                   uiOutput("razaInput")),
-#            column(3,
-#                   uiOutput("estadoInput")),
-#            column(3,
-#                   actionButton("actualizar", label = "DO NOT CLICK"))
-#   ),
-#   fluidRow(column(12, withSpinner(leafletOutput("mapaF"), type = 1))),
-#
-#   fluidRow(tabsetPanel(
-#     tabPanel("Granos", withSpinner(plotOutput("grafGranos"), type = 1)),
-#     tabPanel("Mazorcas", withSpinner(plotOutput("grafMazorcas"), type = 1)),
-#     tabPanel("Agricultores", withSpinner(plotOutput("grafAgricultores"), type = 1)),
-#     tabPanel("Pros y contras", withSpinner(plotOutput("grafProCon"), type = 1))
-#     )
-#     ),
-#
-#
-#   fluidRow(column(12, dataTableOutput("maices")))
-# )
 
 # Define server logic required to draw a histogram
 server <- function(input, output, session){
@@ -116,11 +98,11 @@ server <- function(input, output, session){
                 selected = "Todos", multiple = TRUE)
   })
 
-  output$estadoInput <- renderUI({
-    req(input$complejo1)
-    selectInput("estadoInput", label = "Estado", choices = "Todos",
-                selected = "Todos", multiple = TRUE)
-  })
+  # output$estadoInput <- renderUI({
+  #   req(input$complejo1)
+  #   selectInput("estadoInput", label = "Estado", choices = "Todos",
+  #               selected = "Todos", multiple = TRUE)
+  # })
 
   complejoRctv <- reactive(input$complejo1)
 
@@ -131,27 +113,27 @@ server <- function(input, output, session){
     listaCR <- c("Todos", sort(unique(listaCR$RazaPrimaria)))
   })
 
-  listaCompEsta <- reactive({
-    listaCE <- bdMaiz %>%
-      filter(ComplejoRacial %in% complejoRctv()) %>%
-      select(ComplejoRacial, Estado)
-    listaCE <- c("Todos", sort(unique(listaCE$Estado)))
-  })
+  # listaCompEsta <- reactive({
+  #   listaCE <- bdMaiz %>%
+  #     filter(ComplejoRacial %in% complejoRctv()) %>%
+  #     select(ComplejoRacial, Estado)
+  #   listaCE <- c("Todos", sort(unique(listaCE$Estado)))
+  # })
 
   observeEvent(complejoRctv(), {
     updateSelectInput(session,
                       "razaInput",
                       label = "Raza primaria",
                       choices = listaCompRaza())
-    updateSelectInput(session,
-                      "estadoInput",
-                      label = "Estado",
-                      choices = listaCompEsta())
+    # updateSelectInput(session,
+    #                   "estadoInput",
+    #                   label = "Estado",
+    #                   choices = listaCompEsta())
   })
 
   maizSelecto <- reactive({
       selecta(database = bdMaiz, complejo = input$complejo1,
-              raza = input$razaInput, estado = input$estadoInput)
+              raza = input$razaInput)#, estado = input$estadoInput)
   }
   )
 
