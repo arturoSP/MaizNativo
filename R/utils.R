@@ -1,6 +1,26 @@
 # lectura de base de datos ----
 bdMaiz <- read.csv("bdMaiz.csv")
 
+# propiedades gráficas ----
+temaright <- theme(legend.position = "right",
+                   axis.title.x = element_blank(),
+                   axis.text.x = element_blank(),
+                   text = element_text(size = 14))
+
+temabottom <- theme(legend.position = "bottom",
+                    axis.title.x = element_blank(),
+                    axis.text.x = element_blank(),
+                    legend.title = element_blank(),
+                    text = element_text(size = 14))
+
+coloresTransparencia <- c("#FBEC5D","#FFA542","#00BFFF","#800080","#8B0000","#000000",
+                          "#FFF380","#FF4500","#000080","#FFA5FF","#A52A2A","#D1D1D1",
+                          "#FFE66D","#FFA500","#B2B2FF","#A52AA5","#690000","#404040",
+                          "#FFFF00","#FF6900","#00FF00","#FF00FF","#FF8040","#FFFAFA",
+                          "#FAFAD2","#FF003D","#B2B280","#D10069","#FFA07A","#666666",
+                          "#FFFFD1","#A50042","#FFE6A5","#A02020","#800026","#FFF5D1"
+                          )
+
 # función para mapeo ----
 getColor <- function(Selecto){
   nSel <- length(unique(Selecto))
@@ -41,13 +61,11 @@ selecta <- function(database, complejo = "Todos", raza = "Todos"){#, estado = "T
                   SuperficieSembrada, EpocaSiembra1, EpocaSiembra2, EpocaFloracion,
                     EpocaMadurez, EpocaCosecha1, EpocaCosecha2, SistemaCultivo, CultivosAsociados,
                   Insectos, Malezas, ProblemasAlmacenamiento, ControlMecanico,
-                    ControlFungicidaBactericida, ControlInsecticida
+                    ControlFungicidaBactericida, ControlInsecticida,
+                  Usos, UsosGrano
                   )
   maizBD <- maizBD[maizBD$ComplejoRacial %in% complejo,]
   maizBD <- if(any("Todos" %in% raza)){maizBD} else{maizBD[maizBD$RazaPrimaria %in% raza,]}
-  #maizBD <- if(complejo %in% "Todos"){maizBD} else{maizBD[maizBD$ComplejoRacial %in% complejo,]}
-  #maizBD <- if("Todos" %in% raza){maizBD} else{maizBD[maizBD$RazaPrimaria %in% raza,]}
-  #maizBD <- if(estado != "Todos"){maizBD[maizBD$Estado %in% estado,]} else{maizBD}
 
   return(maizBD)
 }
@@ -77,11 +95,112 @@ plotMazorca <- function(maizSelecto){
     facet_wrap(facets = ~Metrica, scales = "free", nrow = 1)+
     ylab("[cm]")+
     theme_classic()+
-    theme(axis.title.x = element_blank(), axis.text.x = element_blank())+
+    temabottom +
     scale_color_manual(values = coloresTransparencia)+
     ggtitle("Características de la mazorca")
 
   return(p1)
+}
+
+## data de usos ----
+plotUsos <- function(maizSelecto){
+  granosU <- maizSelecto %>%
+    select(Id, RazaPrimaria, UsosGrano, Usos) %>%
+    filter(UsosGrano != "ND") %>%
+    filter(Usos != "ND") %>%
+    mutate(UsosGrano = str_to_lower(UsosGrano),
+           Usos = str_to_lower(Usos))
+
+  granosU$Atole <- str_detect(granosU$UsosGrano, "atole")
+  granosU$Corundas <- str_detect(granosU$UsosGrano, "corundas")
+  granosU$Elote <- str_detect(granosU$UsosGrano, "elote")
+  granosU$Esquites <- str_detect(granosU$UsosGrano, "esquites")
+  granosU$Forraje <- str_detect(granosU$UsosGrano, "forraje")
+  granosU$Gorditas <- str_detect(granosU$UsosGrano, "gorditas")
+  granosU$Harina <- str_detect(granosU$UsosGrano, "harina")
+  granosU$Hoja <- str_detect(granosU$UsosGrano, "hoja")
+  granosU$Huacholes <- str_detect(granosU$UsosGrano, "huacholes")
+  granosU$Nixtamal <- str_detect(granosU$UsosGrano, "nixtamal")
+  granosU$Panuchos <- str_detect(granosU$UsosGrano, "panuchos")
+  granosU$Pinole <- str_detect(granosU$UsosGrano, "pinole")
+  granosU$Ponteduro <- str_detect(granosU$UsosGrano, "ponteduro")
+  granosU$Pozol <- str_detect(granosU$UsosGrano, "pozol")
+  granosU$Pozole <- str_detect(granosU$UsosGrano, "pozole")
+  granosU$Salbutes <- str_detect(granosU$UsosGrano, "salbutes")
+  granosU$Semilla <- str_detect(granosU$UsosGrano, "semilla")
+  granosU$Tamal <- str_detect(granosU$UsosGrano, "tamal")
+  granosU$Tesgüino <- str_detect(granosU$UsosGrano, "tesgüino")
+  granosU$Tlacoyos <- str_detect(granosU$UsosGrano, "tlacoyos")
+  granosU$Tomoxtle <- str_detect(granosU$UsosGrano, "tomoxtle")
+  granosU$Tortilla <- str_detect(granosU$UsosGrano, "tortilla")
+  granosU$Tostada <- str_detect(granosU$UsosGrano, "tostada")
+  granosU$Totopo <- str_detect(granosU$UsosGrano, "totopo")
+  granosU$u_Abono <- str_detect(granosU$Usos, "abono")
+  granosU$u_Alimento <- str_detect(granosU$Usos, "alimento")
+  granosU$u_Combustible <- str_detect(granosU$Usos, "combustible")
+  granosU$u_Elote <- str_detect(granosU$Usos, "elote")
+  granosU$u_Forraje <- str_detect(granosU$Usos, "forraje")
+  granosU$u_Grano <- str_detect(granosU$Usos, "grano")
+  granosU$u_Hoja <- str_detect(granosU$Usos, "hoja")
+  granosU$u_Nixtamal <- str_detect(granosU$Usos, "nixtamal")
+  granosU$u_Otro <- str_detect(granosU$Usos, "otro")
+  granosU$u_Pozole <- str_detect(granosU$Usos, "pozole")
+  granosU$u_Semilla <- str_detect(granosU$Usos, "semilla")
+  granosU$u_Tortilla <- str_detect(granosU$Usos, "tortilla")
+  granosU$u_Totomoxtle <- str_detect(granosU$Usos, "totomoxtle")
+
+  granosU <- granosU[,-3]
+
+  granosUsos <- granosU %>%
+    group_by(RazaPrimaria) %>%
+    summarise(across(.cols = c(Atole:Totopo), .fns = sum)) %>%
+    tidyr::pivot_longer(cols = c(Atole:Totopo), names_to = "Uso", values_to = "Valor") %>%
+    group_by(RazaPrimaria) %>%
+    reframe(Total = sum(Valor))
+  usosUsos <- granosU %>%
+    group_by(RazaPrimaria) %>%
+    summarise(across(.cols = c(u_Abono:u_Totomoxtle), .fns = sum)) %>%
+    tidyr::pivot_longer(cols = c(u_Abono:u_Totomoxtle),
+                        names_to = "Uso", values_to = "Valor",
+                        names_prefix = "u_") %>%
+    group_by(RazaPrimaria) %>%
+    reframe(Total = sum(Valor))
+
+  p1 <- granosU %>%
+    group_by(RazaPrimaria) %>%
+    summarise(across(.cols = c(u_Abono:u_Totomoxtle), .fns = sum)) %>%
+    tidyr::pivot_longer(cols = c(u_Abono:u_Totomoxtle),
+                        names_to = "Uso",
+                        values_to = "Valor",
+                        names_prefix = "u_") %>%
+    left_join(usosUsos) %>%
+    mutate(Porcentaje = Valor / Total) %>%
+    ggplot(aes(x = RazaPrimaria, y = Porcentaje, fill = Uso))+
+    geom_col(color = "gray80", alpha = 0.7)+
+    facet_wrap(~RazaPrimaria, nrow = 1, scales = "free_x")+
+    scale_fill_manual(values = coloresTransparencia)+
+    theme_classic()+
+    temabottom+
+    ggtitle("Usos en general")+
+    ylab("Proporción de uso")
+
+  p2 <- granosU %>%
+    group_by(RazaPrimaria) %>%
+    summarise(across(.cols = c(Atole:Totopo), .fns = sum)) %>%
+    tidyr::pivot_longer(cols = c(Atole:Totopo), names_to = "Uso", values_to = "Valor") %>%
+    left_join(granosUsos) %>%
+    mutate(Porcentaje = Valor / Total) %>%
+    ggplot(aes(x = RazaPrimaria, y = Porcentaje, fill = Uso))+
+    geom_col(color = "gray80", alpha = 0.7)+
+    facet_wrap(~RazaPrimaria, nrow = 1, scales = "free_x")+
+    scale_fill_manual(values = coloresTransparencia)+
+    theme_classic()+
+    temabottom+
+    ggtitle("Usos del grano")+
+    ylab("Proporción de uso")
+
+  pf <- ggpubr::ggarrange(p1, p2)
+  return(pf)
 }
 
 ## data de granos ----
@@ -144,10 +263,10 @@ plotGrano <- function(maizSelecto){
     mutate(Porcentaje = Valor / Total) %>%
     ggplot(aes(x = RazaPrimaria, y = Porcentaje, fill = Color))+
     geom_col(color = "gray80", alpha = 0.7)+
+    facet_wrap(~RazaPrimaria, nrow = 1, scales = "free_x")+
     scale_fill_manual(values = coloresPaleta)+
     theme_classic()+
-    theme(legend.position = "bottom", axis.title.x = element_blank(),
-          legend.title = element_blank())+
+    temabottom+
     ggtitle("Color del grano")+
     ylab("Composición")
 
@@ -158,7 +277,7 @@ plotGrano <- function(maizSelecto){
     facet_wrap(facets = ~Metrica, scales = "free", nrow = 1)+
     ylab("[cm]")+
     theme_classic()+
-    theme(axis.title.x = element_blank(), axis.text.x = element_blank())+
+    temabottom+
     scale_color_manual(values = coloresTransparencia)+
     ggtitle("Características del grano")
 
@@ -178,7 +297,7 @@ plotAgricultor <- function(maizSelecto){
     facet_wrap(facets = ~RazaPrimaria, scales = "free_x", nrow = 1)+
     ylab("Años")+
     theme_classic()+
-    theme(axis.title.x = element_blank(), axis.text.x = element_blank())+
+    temabottom +
     scale_color_manual(values = coloresTransparencia)+
     ggtitle("Edad de los agricultores")
 
@@ -191,7 +310,7 @@ plotAgricultor <- function(maizSelecto){
     ylab("Productores")+
     facet_wrap(facets = ~RazaPrimaria, scales = "free_x", nrow = 1)+
     theme_classic()+
-    theme(axis.title.x = element_blank(), axis.text.x = element_blank())+
+    temabottom +
     scale_color_manual(values = coloresTransparencia)+
     ggtitle("Pertenencia a grupos indígenas")
 
@@ -223,10 +342,17 @@ plotProCon <- function(maizSelecto){
   CorpAFavor[["1"]][["content"]]
   MatrAFavor <- termFreq(CorpAFavor[["1"]][["content"]]) %>% as.data.frame()
   colnames(MatrAFavor) <- c("cuenta")
+  MatrAFavor$palabra <- rownames(MatrAFavor)
+  MatrAFavor <-  MatrAFavor %>% arrange(desc(cuenta))
+  MatrAFavor <- if(nrow(MatrAFavor) >= 25) {
+    MatrAFavor[c(1:25),]
+  } else {
+      MatrAFavor
+    }
   p1 <- ggplot(MatrAFavor,
-               aes(label = rownames(MatrAFavor), size = as.numeric(cuenta), color = as.numeric(cuenta)))+
+               aes(label = palabra, size = as.numeric(cuenta), color = as.numeric(cuenta)))+
     ggwordcloud::geom_text_wordcloud()+
-    scale_size_area(max_size = 10)+
+    scale_size_area(max_size = 15)+
     scale_color_gradient2(low = "darkred", mid = "#FFDB48", high = "purple")+
     theme_classic()+
     ggtitle("A los productores les gusta:")
@@ -259,10 +385,17 @@ plotProCon <- function(maizSelecto){
   CorpEnContra[["1"]][["content"]]
   MatrEnContra <- termFreq(CorpEnContra[["1"]][["content"]]) %>% as.data.frame()
   colnames(MatrEnContra) <- c("cuenta")
+  MatrEnContra$palabra <- rownames(MatrEnContra)
+  MatrEnContra <-  MatrEnContra %>% arrange(desc(cuenta))
+  MatrEnContra <- if(nrow(MatrEnContra) >= 25) {
+    MatrEnContra[c(1:25),]
+  } else {
+    MatrEnContra
+  }
   p2 <- ggplot(MatrEnContra,
-               aes(label = rownames(MatrEnContra), size = as.numeric(cuenta), color = as.numeric(cuenta)))+
+               aes(label = palabra, size = as.numeric(cuenta), color = as.numeric(cuenta)))+
     ggwordcloud::geom_text_wordcloud()+
-    scale_size_area(max_size = 10)+
+    scale_size_area(max_size = 15)+
     scale_color_gradient2(low = "darkred", mid = "#FFDB48", high = "purple")+
     theme_classic()+
     ggtitle("A los productores no les gusta:")
@@ -270,9 +403,3 @@ plotProCon <- function(maizSelecto){
   pf <- ggpubr::ggarrange(p1, p2, nrow = 1)
   return(pf)
 }
-
- coloresTransparencia <- c("#FBEC5D", "#FFA542", "#00BFFF", "#800080",
-                           "#FF0000", "#FF4500", "#8B0000", "#000000",
-                           "#FFC0CB", "#D1D1D1", "#A52A2A", "#FFF380",
-                           "#0000FF", "#FFE66D", "#FFA500", "#FFFF00",
-                           "#FAFAD2", "#00FF00", "#FF00FF", "#FFFAFA")

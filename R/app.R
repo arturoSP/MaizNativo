@@ -60,10 +60,21 @@ ui <- function(){
     pageContainer(
       h2("Detalles con respecto a la data", class = "header shadow-dark"),
       tabsetPanel(
-        tabPanel("Granos", withSpinner(plotOutput("grafGranos", height = "600px"), type = 1)),
-        tabPanel("Mazorcas", withSpinner(plotOutput("grafMazorcas", height = "600px"), type = 1)),
-        tabPanel("Agricultores", withSpinner(plotOutput("grafAgricultores", height = "600px"), type = 1)),
-        tabPanel("Pros y contras", withSpinner(plotOutput("grafProCon", height = "600px"), type = 1))
+        tabPanel("Granos",
+                 withSpinner(plotOutput("grafGranos", height = "600px"),
+                             type = 1)),
+        tabPanel("Mazorcas",
+                 withSpinner(plotOutput("grafMazorcas", height = "600px"),
+                             type = 1)),
+        tabPanel("Agricultores",
+                 withSpinner(plotOutput("grafAgricultores", height = "600px"),
+                             type = 1)),
+        tabPanel("Pros y contras",
+                 withSpinner(plotOutput("grafProCon", height = "600px"),
+                             type = 1)),
+        tabPanel("Usos principales",
+                 withSpinner(plotOutput("grafUsos", height = "600px"),
+                             type = 1))
       )
     )
   ),
@@ -90,7 +101,7 @@ ui <- function(){
 #   )
 
 
-# Define server logic required to draw a histogram
+# Define server logic
 server <- function(input, output, session){
   output$razaInput <- renderUI({
     req(input$complejo1)
@@ -149,7 +160,10 @@ server <- function(input, output, session){
 
   output$grafProCon <- renderPlot(plotProCon(maizSelecto()))
 
+  output$grafUsos <- renderPlot(plotUsos(maizSelecto()))
+
   output$maices <- renderDataTable(maizSelecto())
+
 }
 
 
