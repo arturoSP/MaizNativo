@@ -1,0 +1,43 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Kalam&family=Raleway:wght@300&display=swap');
+
+*{
+  font-family: 'Kalam', cursive;
+  font-family: 'Raleway', sans-serif;
+}
+
+.header{
+  font-family: 'Kalam', cursive;
+  color: #fffacf;
+  font-size: 45px;
+}
+
+.shadow-dark{
+  text-shadow: 0px 2px 2px rgba(47, 47, 47, 1);
+}
+
+.shadow-light{
+  text-shadow: 0px 2px 2px rgba(249, 247, 241, 1);
+}
+
+.highlight{
+  background-color: #FFF380;
+}
+
+.link{
+  color: #247BA0 !important;
+}
+
+.light{
+  color: #f9f7f1;
+}
+
+.footer{
+  position: fixed;
+  width: 100%;
+  bottom: 5px;
+}
+
+.dark{
+  color: #500050;
+}
