@@ -25,8 +25,13 @@ app_server <- function(input, output, session) {
                       selected = sample(listaCompRaza(),2))
   })
 
+  complejoRac <- eventReactive(input$complejo1, {
+    selectComplejo(complejo = input$complejo1)
+  })
+
   maizSelecto <- eventReactive(input$actualizar, {
-    selecta(database = bdMaiz, complejo = input$complejo1,
+    selecta(database = bdMaiz,
+            complejo = input$complejo1,
             raza = input$razaInput)
   }
   )
@@ -45,5 +50,9 @@ app_server <- function(input, output, session) {
 
   output$grafUsos <- renderPlot(plotUsos(maizSelecto()))
 
-  output$maices <- renderDataTable(maizSelecto())
+  output$complejoText <- renderText(complejoRac()[[1]])
+
+  output$complejoImag <- renderImage(complejoRac()[[2]], deleteFile = FALSE)
+
+  #complejoRac <- eventReactive(input$actualizar, {selectComplejo(maizSelecto())})
 }

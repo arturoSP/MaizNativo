@@ -15,49 +15,61 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     # Your application UI logic
     pagePiling(
-      navigation = TRUE,
+      navigation = FALSE,
       sections.color = c("#FFF380", "#800080", "#FFF380", "#800080", "#FFF380", "#800080"),
       opts = options,
       menu = c(
         "Home" = "home",
         "Introducción" = "intro",
+        "Complejos raciales" = "description",
         "Mapa" = "map",
         "Razas" = "plots",
-        "Complejo Racial" = "description",
         "Acerca de" = "about"
       ),
       pageSectionImage(
         center = TRUE,
-        img = "www/img/MaizPixel.jpeg",
+        img = "www/img/MaizPixel.png",
         menu = "home",
-        h1("Maíces nativos en México", class = "header highlight shadow-light")
+        h1("Maíces nativos en México", class = "header shadow-light")
       ),
       pageSection(
         center = TRUE,
         menu = "intro",
         pageContainer(
           h2("Proyecto Global de Maíces", class = "header shadow-dark"),
-          #includeMarkdown("./inst/app/www/Intro.Rmd")
-          includeHTML("./inst/app/www/Intro.html")
-          #fluidRow(column(12, includeHTML("./www/BCG_Coral_Reef_App.html")))),
+          includeMarkdown("./inst/app/www/Intro.Rmd")
+          #includeHTML("./inst/app/www/Intro.html")
+        )
+      ),
+      pageSection(
+        center = TRUE,
+        menu = "description",
+        pageRow(
+          h2("Selecciona un complejo racial", class = "header dark shadow-ligth"),
+          fluidRow(
+            column(4,
+                   selectInput("complejo1", label = "Selecciona:",
+                               choices = ComplRaci,
+                               selected = sample(ComplRaci, 1)))
+          ),
+          pageColumn(width = 7,
+                     textOutput("complejoText", container = span)),
+          pageColumn(width = 5,
+                     imageOutput("complejoImag"))
         )
       ),
       pageSection(
         center = TRUE,
         menu = "map",
         pageContainer(
-          h2("Selecciona un complejo y sus razas", class = "header dark shadow-light"),
+          h2("Selecciona algunas razas", class = "header shadow-light"),
           br(),
-          fluidRow(column(4,
-                          selectInput("complejo1", label = "Complejo racial",
-                                      choices = ComplRaci,
-                                      selected = sample(ComplRaci, 1))),
-                   column(4,
+          fluidRow(column(6,
                           selectInput("razaInput", label = "Raza primaria",
                                       choices = NULL,
                                       selected = NULL,
                                       multiple = TRUE)),
-                   column(4,
+                   column(6,
                           actionButton("actualizar", label = "Actualizar selección"))
           ),
           withSpinner(leafletOutput("mapaF", height = "600px"), type = 1)
@@ -67,7 +79,7 @@ app_ui <- function(request) {
         center = TRUE,
         menu = "plots",
         pageContainer(
-          h2("Detalles con respecto a la data", class = "header shadow-dark"),
+          h2("Detalles con respecto a la data", class = "header dark shadow-dark"),
           tabsetPanel(
             tabPanel("Granos",
                      withSpinner(plotOutput("grafGranos", height = "600px"),
@@ -85,16 +97,6 @@ app_ui <- function(request) {
                      withSpinner(plotOutput("grafUsos", height = "600px"),
                                  type = 1))
           )
-        )
-      ),
-      pageSection(
-        center = TRUE,
-        menu = "description",
-        pageContainer(
-          h2("Complejo racial", class = "header dark shadow-light"),
-          includeMarkdown("./inst/app/www/ComplejoConico2.Rmd")
-          #includeHTML("./inst/app/www/ComplejoConico2.html")
-          #fluidRow(column(12, includeHTML("./www/BCG_Coral_Reef_App.html")))),
         )
       ),
       pageSection(

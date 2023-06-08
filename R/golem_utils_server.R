@@ -142,3 +142,6 @@ ComplRaci <- c("Chapalote", "Cónico", "Dentados tropicales", "Ocho hileras",
                "Sierra de Chihuahua", "Tropicales precoces", "Tropicales tardíos",
                "No asociadas a un complejo racial")
 
+ComplText <- readLines("./inst/app/www/ComplejoTodo.txt")
+
+
