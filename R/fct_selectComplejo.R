@@ -9,31 +9,40 @@
 #'
 # selecciona el archivo a presentar
 selectComplejo <- function(complejo){
-  info <- if(complejo == "Cónico"){
-    #ComplText[2]
-    texto <- paste(ComplText[2], ComplText[3], sep = "\n")
-    capture.output(cat(texto, sep = "\n"))
+  info1 <- if(complejo == "Cónico"){
+    capture.output(cat(ComplText[2]))
   } else if(complejo == "Dentados tropicales"){
-    #ComplText[22]
-    capture.output(cat(ComplText[22], ComplText[23], sep = "  "))
+    capture.output(cat(ComplText[22]))
   } else if(complejo == "Tropicales tardíos"){
-    #ComplText[26]
-    capture.output(cat(ComplText[26], ComplText[27], sep = "  "))
+    capture.output(cat(ComplText[26]))
   } else if(complejo == "Ocho hileras"){
-    #ComplText[10]
-    capture.output(cat(ComplText[10], ComplText[11], sep = "  "))
+    capture.output(cat(ComplText[10]))
   } else if(complejo == "Sierra de Chihuahua"){
-    #ComplText[6]
-    capture.output(cat(ComplText[6], ComplText[7], sep = "  "))
+    capture.output(cat(ComplText[6]))
   } else if(complejo == "Chapalote"){
-    #ComplText[14]
-    capture.output(cat(ComplText[14], ComplText[15], sep = "  "))
+    capture.output(cat(ComplText[14]))
   } else if(complejo == "Tropicales precoces"){
-    #ComplText[18]
-    capture.output(cat(ComplText[18], ComplText[19], sep = "  "))
+    capture.output(cat(ComplText[18]))
   } else {
-    #ComplText[29]
     capture.output(cat(ComplText[29]))
+  }
+
+  info2 <- if(complejo == "Cónico"){
+    capture.output(cat(ComplText[3]))
+  } else if(complejo == "Dentados tropicales"){
+    capture.output(cat(ComplText[23]))
+  } else if(complejo == "Tropicales tardíos"){
+    capture.output(cat(ComplText[27]))
+  } else if(complejo == "Ocho hileras"){
+    capture.output(cat(ComplText[11]))
+  } else if(complejo == "Sierra de Chihuahua"){
+    capture.output(cat(ComplText[7]))
+  } else if(complejo == "Chapalote"){
+    capture.output(cat(ComplText[15]))
+  } else if(complejo == "Tropicales precoces"){
+    capture.output(cat(ComplText[19]))
+  } else {
+    capture.output(cat(""))
   }
 
   pict <- if(complejo == "Cónico"){
@@ -70,7 +79,7 @@ selectComplejo <- function(complejo){
          width = "400px")
   }
 
-  infoCompleta <- list(info = info, pict = pict)
+  infoCompleta <- list(info1 = info1, info2 = info2, pict = pict)
 
   return(infoCompleta)
 }

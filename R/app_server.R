@@ -50,9 +50,11 @@ app_server <- function(input, output, session) {
 
   output$grafUsos <- renderPlot(plotUsos(maizSelecto()))
 
-  output$complejoText <- renderText(complejoRac()[[1]])
+  output$complejoText1 <- renderText(complejoRac()[[1]])
 
-  output$complejoImag <- renderImage(complejoRac()[[2]], deleteFile = FALSE)
+  output$complejoText2 <- renderText(complejoRac()[[2]])
+
+  output$complejoImag <- renderImage(complejoRac()[[3]], deleteFile = FALSE)
 
   #complejoRac <- eventReactive(input$actualizar, {selectComplejo(maizSelecto())})
 }

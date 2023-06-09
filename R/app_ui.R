@@ -28,14 +28,14 @@ app_ui <- function(request) {
       ),
       pageSectionImage(
         center = TRUE,
-        img = "www/img/MaizPixel.png",
+        img = "./www/MaizPixel.png",
         menu = "home",
         h1("Maíces nativos en México", class = "header shadow-light")
       ),
       pageSection(
         center = TRUE,
         menu = "intro",
-        pageContainer(
+        pageContainer(style = "color: #f9f7f1;",
           h2("Proyecto Global de Maíces", class = "header shadow-dark"),
           includeMarkdown("./inst/app/www/Intro.Rmd")
           #includeHTML("./inst/app/www/Intro.html")
@@ -47,15 +47,29 @@ app_ui <- function(request) {
         pageRow(
           h2("Selecciona un complejo racial", class = "header dark shadow-ligth"),
           fluidRow(
-            column(4,
-                   selectInput("complejo1", label = "Selecciona:",
+            column(12,
+                   selectInput("complejo1", label = "",
                                choices = ComplRaci,
                                selected = sample(ComplRaci, 1)))
           ),
           pageColumn(width = 7,
-                     textOutput("complejoText", container = span)),
+                     textOutput("complejoText1"),
+                     br(),
+                     textOutput("complejoText2")),
           pageColumn(width = 5,
-                     imageOutput("complejoImag"))
+                     imageOutput("complejoImag")),
+          fluidRow(style = "font-size: 10px;",
+            column(12,
+                   br(),
+                   "CONABIO. 2011.",
+                   tags$a(href="https://www.biodiversidad.gob.mx/diversidad/proyectoMaices",
+                          "Proyecto Global de Maíces Nativos.",
+                          target = "_blank"),
+                   "Comisión Nacional para el Conocimiento y Uso de la Biodiversidad;
+                   Instituto Nacional de Investigaciones Forestales, Agrícolas y Pecuarias;
+                   Instituto Nacional de Ecología y cambio Climático. México."
+                   )
+          )
         )
       ),
       pageSection(
@@ -64,12 +78,12 @@ app_ui <- function(request) {
         pageContainer(
           h2("Selecciona algunas razas", class = "header shadow-light"),
           br(),
-          fluidRow(column(6,
+          fluidRow(column(4,
                           selectInput("razaInput", label = "Raza primaria",
                                       choices = NULL,
                                       selected = NULL,
                                       multiple = TRUE)),
-                   column(6,
+                   column(4,
                           actionButton("actualizar", label = "Actualizar selección"))
           ),
           withSpinner(leafletOutput("mapaF", height = "600px"), type = 1)
@@ -99,15 +113,11 @@ app_ui <- function(request) {
           )
         )
       ),
-      pageSection(
+      pageSection(style = "color: #f9f7f1;",
         center = TRUE,
         menu = "about",
-        h2("Acerca de", class = "header shadow-dark"),
-        h3("Proyecto desarrollado por Arturo Sanchez-Porras & Aline Romero-Natale.",
-           class = "shadow-light"),
-        h4("Una liga aquí para github", class = "shadow-light"),
-        h4("Una liga aquí para CONABIO", class = "shadow-light"),
-        h4("Una liga aquí para CONACYT", class = "shadow-light")
+        h2("¿Qué sigue?", class = "header shadow-dark"),
+        includeMarkdown("./inst/app/www/Conclusion.Rmd")
       )
     )
   )
