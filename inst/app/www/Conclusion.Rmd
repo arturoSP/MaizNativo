@@ -4,13 +4,10 @@ output: html_document
 ---
 
 - Visita las **ferias de maíz nativo** que se llevan a cabo en muchas localidades rurales y pueblos mágicos del país. Consume local y apoya a los pequeños productores.
-- [**Incluye maíz nativo en tu dieta regular**](https://youtu.be/Hhteef-4Kwk){target="_blank"}. El maíz nativo tiene [alto contenido de antioxidantes y puede ser una buena fuente de calcio y fibra](https://www.scielo.org.mx/scielo.php?script=sci_arttext&pid=S0187-73802013000500004){target="_blank"}. mejora la textura de la piel, la circulación sanguínea y hasta la salud ocular por sus vitaminas y minerales.
+- [**Incluye maíz nativo en tu dieta regular**](https://youtu.be/Hhteef-4Kwk){target="_blank"}. El maíz nativo tiene [alto contenido de antioxidantes y puede ser una buena fuente de calcio y fibra](https://www.scielo.org.mx/scielo.php?script=sci_arttext&pid=S0187-73802013000500004){target="_blank"}.
 - Practica el [**manejo y aprovechamiento de maíz palomero toluqueño**](https://youtu.be/yA60EtBClvs){target="_blank"}, una variedad nativa que se usa para elaborar palomitas de maíz.
 - Si eres productor, participa en el [**Programa de Conservación de Maíz Criollo (PROMAC)**](https://www.gob.mx/conanp/acciones-y-programas/maiz-criollo){target="_blank"}, del gobierno federal, que otorga apoyos para la conservación del maíz criollo y sus parientes silvestres.
 
 ***
-
-Este proyecto fue desarrollado como una colaboración institucional entre la [ENES Mérida](http://enesmerida.unam.mx){target="_blank"} y la [UAEH](https://www.uaeh.edu.mx/){target="_blank"} para dar difusión a los resultados del [Proyecto Global de Maíces Nativos liderado por CONABIO](https://www.biodiversidad.gob.mx/diversidad/proyectoMaices){target="_blank"}.
-La investigación y programación fueron realizadas por Arturo Sanchez-Porras y Aline Romero-Natale durante un periodo de estancia postdoctoral apoyada por [CONAHCYT](https://conahcyt.mx/){target="_blank"}. 2023.
 
 ![CONABIO](logo_conabio.png) ![CONAHCYT](logo_conacyt.png) ![ENES Mérida](logo_enes.png) ![UAEH](logo_uaeh.png)

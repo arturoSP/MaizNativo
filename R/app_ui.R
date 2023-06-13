@@ -15,8 +15,9 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     # Your application UI logic
     pagePiling(
-      navigation = FALSE,
-      sections.color = c("#FFF380", "#800080", "#FFF380", "#800080", "#FFF380", "#800080"),
+      navigation = TRUE,
+      touchSensitivity = 10,
+      sections.color = c("#FFF380", "#ff8e7f", "#ffce7f", "#ff7fb0", "#FFF380", "#FFFAC8"),
       opts = options,
       menu = c(
         "Home" = "home",
@@ -28,24 +29,33 @@ app_ui <- function(request) {
       ),
       pageSectionImage(
         center = TRUE,
-        img = "./www/MaizPixel.png",
+        img = "./www/MaizPixel.jpeg",
         menu = "home",
-        h1("Maíces nativos en México", class = "header shadow-light")
+        h1("Maíces nativos en México", class = "header shadow-light",
+           style = "background-color: #800080; font-family: 'Ubuntu', sans-serif;")
       ),
       pageSection(
-        center = TRUE,
+        center = FALSE,
         menu = "intro",
-        pageContainer(style = "color: #f9f7f1;",
-          h2("Proyecto Global de Maíces", class = "header shadow-dark"),
-          includeMarkdown("./inst/app/www/Intro.Rmd")
+        pageContainer(
+          h2("Proyecto Global de Maíces", class = "header shadow-light"),
+          includeMarkdown("./inst/app/www/Intro.Rmd"),
           #includeHTML("./inst/app/www/Intro.html")
+          h4(class = "small footer",
+             "CONABIO. 2011.",
+             tags$a(href="https://www.biodiversidad.gob.mx/diversidad/proyectoMaices",
+                    "Proyecto Global de Maíces Nativos.",
+                    target = "_blank"),
+             "Comisión Nacional para el Conocimiento y Uso de la Biodiversidad;
+                   Instituto Nacional de Investigaciones Forestales, Agrícolas y Pecuarias;
+                   Instituto Nacional de Ecología y cambio Climático. México.")
         )
       ),
       pageSection(
-        center = TRUE,
+        center = FALSE,
         menu = "description",
         pageRow(
-          h2("Selecciona un complejo racial", class = "header dark shadow-ligth"),
+          h2("Selecciona un complejo racial", class = "header dark shadow-dark"),
           fluidRow(
             column(12,
                    selectInput("complejo1", label = "",
@@ -58,22 +68,22 @@ app_ui <- function(request) {
                      textOutput("complejoText2")),
           pageColumn(width = 5,
                      imageOutput("complejoImag")),
-          fluidRow(style = "font-size: 10px;",
+          fluidRow(
             column(12,
-                   br(),
-                   "CONABIO. 2011.",
-                   tags$a(href="https://www.biodiversidad.gob.mx/diversidad/proyectoMaices",
-                          "Proyecto Global de Maíces Nativos.",
-                          target = "_blank"),
-                   "Comisión Nacional para el Conocimiento y Uso de la Biodiversidad;
+                   h3(class = "dark small footer",
+                      "CONABIO. 2011.",
+                      tags$a(href="https://www.biodiversidad.gob.mx/diversidad/proyectoMaices",
+                             "Proyecto Global de Maíces Nativos.",
+                             target = "_blank"),
+                      "Comisión Nacional para el Conocimiento y Uso de la Biodiversidad;
                    Instituto Nacional de Investigaciones Forestales, Agrícolas y Pecuarias;
-                   Instituto Nacional de Ecología y cambio Climático. México."
+                   Instituto Nacional de Ecología y cambio Climático. México.")
                    )
           )
         )
       ),
       pageSection(
-        center = TRUE,
+        center = FALSE,
         menu = "map",
         pageContainer(
           h2("Selecciona algunas razas", class = "header shadow-light"),
@@ -86,14 +96,22 @@ app_ui <- function(request) {
                    column(4,
                           actionButton("actualizar", label = "Actualizar selección"))
           ),
-          withSpinner(leafletOutput("mapaF", height = "600px"), type = 1)
+          withSpinner(leafletOutput("mapaF", height = "600px"), type = 1),
+          h4(class = "small footer",
+             "CONABIO. 2011.",
+             tags$a(href="https://www.biodiversidad.gob.mx/diversidad/proyectoMaices",
+                    "Proyecto Global de Maíces Nativos.",
+                    target = "_blank"),
+             "Comisión Nacional para el Conocimiento y Uso de la Biodiversidad;
+                   Instituto Nacional de Investigaciones Forestales, Agrícolas y Pecuarias;
+                   Instituto Nacional de Ecología y cambio Climático. México.")
         )
       ),
       pageSection(
-        center = TRUE,
+        center = FALSE,
         menu = "plots",
         pageContainer(
-          h2("Detalles con respecto a la data", class = "header dark shadow-dark"),
+          h2("Características de tu selección:", class = "header dark shadow-dark"),
           tabsetPanel(
             tabPanel("Granos",
                      withSpinner(plotOutput("grafGranos", height = "600px"),
@@ -110,14 +128,47 @@ app_ui <- function(request) {
             tabPanel("Usos principales",
                      withSpinner(plotOutput("grafUsos", height = "600px"),
                                  type = 1))
-          )
+          ),
+          h4(class = "small footer",
+             "CONABIO. 2011.",
+             tags$a(href="https://www.biodiversidad.gob.mx/diversidad/proyectoMaices",
+                    "Proyecto Global de Maíces Nativos.",
+                    target = "_blank"),
+             "Comisión Nacional para el Conocimiento y Uso de la Biodiversidad;
+                   Instituto Nacional de Investigaciones Forestales, Agrícolas y Pecuarias;
+                   Instituto Nacional de Ecología y cambio Climático. México.")
         )
       ),
-      pageSection(style = "color: #f9f7f1;",
-        center = TRUE,
+      pageSection(style = "color: #500050;",
+        center = FALSE,
         menu = "about",
-        h2("¿Qué sigue?", class = "header shadow-dark"),
-        includeMarkdown("./inst/app/www/Conclusion.Rmd")
+        h2("¿Qué sigue?", class = "header dark shadow-dark"),
+        #includeHTML("./inst/app/www/Conclusion.html")
+        includeMarkdown("./inst/app/www/Conclusion.Rmd"),
+        h3(class = "footer big",
+           "Este proyecto fue desarrollado como una colaboración institucional entre",
+           tags$a(href="http://enesmerida.unam.mx",
+                  "ENES Mérida",
+                  target = "_blank"),
+           "y",
+           tags$a(href="https://www.uaeh.edu.mx/",
+                  "UAEH",
+                  target = "_blank"),
+           "como parte del programa de estancias postdoctorales de",
+           tags$a(href="https://conahcyt.mx/",
+                  "CONAHCYT",
+                  target="_blank"),
+           "para dar difusión a los resultados del Proyecto Global de Maíces
+           Nativos liderado por ",
+           tags$a(href="https://www.biodiversidad.gob.mx/diversidad/proyectoMaices",
+                  "CONABIO",
+                  target = "_blank"),
+           ".\n",
+           "La investigación y programación fueron realizadas por Dra. Aline
+           Romero-Natale y Dr. Arturo Sanchez-Porras"
+           )
+
+           #![CONABIO](logo_conabio.png) ![CONAHCYT](logo_conacyt.png) ![ENES Mérida](logo_enes.png) ![UAEH](logo_uaeh.png))
       )
     )
   )

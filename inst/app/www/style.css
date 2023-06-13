@@ -1,8 +1,9 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Kalam&family=Raleway:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kalam&family=Raleway:wght@300&family=Ubuntu:wght@400;700&display=swap');
 
 *{
   font-family: 'Kalam', cursive;
+  font-family: 'Ubuntu', sans-serif;
   font-family: 'Raleway', sans-serif;
 }
 
@@ -12,7 +13,24 @@
   font-size: 45px;
 }
 
+h1{
+  font-family: 'Ubuntu', sans-serif;
+  color: #fffacf;
+  font-size: 50px;
+}
+
+h2{
+  font-family: 'Kalam', cursive;
+  color: #fffacf;
+  font-size: 45px;
+}
+
+.blocky{
+  font-family: 'Ubuntu', sans-serif;
+}
+
 .markdown-section{
+  font-family: 'Ubuntu', sans-serif;
   color: #ffffff;
 }
 
@@ -29,14 +47,23 @@
 }
 
 .link{
-  color: #247BA0 !important;
+  color: #16E9AC !important;
 }
 
 .light{
   color: #f9f7f1;
 }
 
+.small{
+  font-size: 12px;
+}
+
+.big{
+  font-size: 70px;
+}
+
 .footer{
+  font-size: 12px;
   position: fixed;
   width: 100%;
   bottom: 5px;

@@ -74,7 +74,7 @@ selectComplejo <- function(complejo){
          alt = "Muestra de maíz zapalote chico",
          width = "400px")
   } else {
-    list(src = "./inst/app/www/maizOlotillo.jpg",
+    list(src = "./inst/app/www/maizSinComplejo.png",
          alt = "Muestra de maíz olotillo",
          width = "400px")
   }
