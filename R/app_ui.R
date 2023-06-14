@@ -22,7 +22,7 @@ app_ui <- function(request) {
       menu = c(
         "Home" = "home",
         "Introducción" = "intro",
-        "Complejos raciales" = "description",
+        "Complejos raciales" = "description1",
         "Mapa" = "map",
         "Razas" = "plots",
         "Acerca de" = "about"
@@ -53,7 +53,7 @@ app_ui <- function(request) {
       ),
       pageSection(
         center = FALSE,
-        menu = "description",
+        menu = "description1",
         pageRow(
           h2("Selecciona un complejo racial", class = "header dark shadow-dark"),
           fluidRow(
