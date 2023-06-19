@@ -1,6 +1,6 @@
 ---
 date: "2023-06-09"
-output: html_document
+output: md_document
 ---
 
 - Visita las **ferias de maíz nativo** que se llevan a cabo en muchas localidades rurales y pueblos mágicos del país. Consume local y apoya a los pequeños productores.

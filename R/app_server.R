@@ -56,5 +56,4 @@ app_server <- function(input, output, session) {
 
   output$complejoImag <- renderImage(complejoRac()[[3]], deleteFile = FALSE)
 
-  #complejoRac <- eventReactive(input$actualizar, {selectComplejo(maizSelecto())})
 }

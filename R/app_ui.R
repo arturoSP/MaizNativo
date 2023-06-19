@@ -23,9 +23,9 @@ app_ui <- function(request) {
         "Home" = "home",
         "Introducción" = "intro",
         "Complejos raciales" = "description1",
-        "Mapa" = "map",
-        "Razas" = "plots",
-        "Acerca de" = "about"
+        "Mapa de razas" = "map",
+        "Características" = "plots",
+        "Más información" = "ending"
       ),
       pageSectionImage(
         center = TRUE,
@@ -39,7 +39,7 @@ app_ui <- function(request) {
         menu = "intro",
         pageContainer(
           h2("Proyecto Global de Maíces", class = "header shadow-light"),
-          includeMarkdown("./inst/app/www/Intro.Rmd"),
+          includeMarkdown("./inst/app/www/Intro.md"),
           #includeHTML("./inst/app/www/Intro.html")
           h4(class = "small footer",
              "CONABIO. 2011.",
@@ -57,7 +57,8 @@ app_ui <- function(request) {
         pageRow(
           h2("Selecciona un complejo racial", class = "header dark shadow-dark"),
           fluidRow(
-            column(12,
+            column(1),
+            column(11,
                    selectInput("complejo1", label = "",
                                choices = ComplRaci,
                                selected = sample(ComplRaci, 1)))
@@ -141,10 +142,10 @@ app_ui <- function(request) {
       ),
       pageSection(style = "color: #500050;",
         center = FALSE,
-        menu = "about",
+        menu = "ending",
         h2("¿Qué sigue?", class = "header dark shadow-dark"),
-        #includeHTML("./inst/app/www/Conclusion.html")
-        includeMarkdown("./inst/app/www/Conclusion.Rmd"),
+        fluidRow(column(12, includeMarkdown("./inst/app/www/Conclusion.md"))),
+        #includeMarkdown("./inst/app/www/Conclusion.Rmd"),
         h3(class = "footer big",
            "Este proyecto fue desarrollado como una colaboración institucional entre",
            tags$a(href="http://enesmerida.unam.mx",
