@@ -16,7 +16,7 @@ editor: visual
 <p>El <strong>Proyecto Global de Maíces (PGM)</strong> un proyecto de investigación realizado por la Comisión Nacional para el Conocimiento y Uso de la Biodiversidad (CONABIO) en México. El objetivo del PGM fue actualizar la información sobre el maíz y sus parientes silvestres en México, con el fin de determinar los centros de origen y diversidad genética del maíz. Los resultados del PGM fueron un paso significativo hacia el cumplimiento de los requisitos de los artículos 86 a 88 de la LBOGM (Ley de Bioseguridad de Organismos Genéticamente Modificados). El PGM también permitió la recolección y actualización de información, que reveló que México tiene 64 razas de maíz, de las cuales 59 son razas nativas.</p>
 </div></td>
 <td style="text-align: center;"><div data-fig-alt="Pixel art maíces nativos de México" width="50.0%" data-layout-align="center" data-fig.extended="false">
-<p><a href="https://www.biodiversidad.gob.mx/diversidad/proyectoMaices"><img src="pgm_pixel.png" data-fig.extended="false" /></a></p>
+<p><a href="https://www.biodiversidad.gob.mx/diversidad/proyectoMaices" target="_blank"><img src="pgm_pixel.png" data-fig.extended="false" /></a></p>
 </div></td>
 </tr>
 </tbody>

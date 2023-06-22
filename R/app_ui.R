@@ -40,7 +40,6 @@ app_ui <- function(request) {
         pageContainer(
           h2("Proyecto Global de Maíces", class = "header shadow-light"),
           includeMarkdown("./inst/app/www/Intro.md"),
-          #includeHTML("./inst/app/www/Intro.html")
           h4(class = "small footer",
              "CONABIO. 2011.",
              tags$a(href="https://www.biodiversidad.gob.mx/diversidad/proyectoMaices",
@@ -54,20 +53,25 @@ app_ui <- function(request) {
       pageSection(
         center = FALSE,
         menu = "description1",
-        pageRow(
+        pageContainer(
           h2("Selecciona un complejo racial", class = "header dark shadow-dark"),
           fluidRow(
-            column(1),
-            column(11,
+            column(8,
+                   p(strong("Utiliza la caja de la derecha para escoger un complejo racial y
+                     obtener información al respecto. Este complejo seguirá seleccionado en
+                     las siguientes secciones de la app.")),
+                   class = "dark",
+                   style = "font-family: 'Ubuntu', sans-serif;"),
+            column(4,
                    selectInput("complejo1", label = "",
                                choices = ComplRaci,
                                selected = sample(ComplRaci, 1)))
           ),
-          pageColumn(width = 7,
+          pageColumn(width = 8,
                      textOutput("complejoText1"),
                      br(),
                      textOutput("complejoText2")),
-          pageColumn(width = 5,
+          pageColumn(width = 4,
                      imageOutput("complejoImag")),
           fluidRow(
             column(12,
@@ -89,12 +93,19 @@ app_ui <- function(request) {
         pageContainer(
           h2("Selecciona algunas razas", class = "header shadow-light"),
           br(),
-          fluidRow(column(4,
-                          selectInput("razaInput", label = "Raza primaria",
+          fluidRow(column(7,
+                          p(strong("Da click en la caja para seleccionar otras razas,
+                                   también puedes borrar alguna al seleccionarla y después
+                                   borrar con el teclado. A continuación da click en el
+                                   botón de \"Actualizar selección\".")),
+                          class = "dark"),
+                   column(5,
+                          selectInput("razaInput", label = "",
+                                      width = "auto",
                                       choices = NULL,
                                       selected = NULL,
-                                      multiple = TRUE)),
-                   column(4,
+                                      multiple = TRUE),#),
+                   #column(4,
                           actionButton("actualizar", label = "Actualizar selección"))
           ),
           withSpinner(leafletOutput("mapaF", height = "600px"), type = 1),
@@ -143,10 +154,11 @@ app_ui <- function(request) {
       pageSection(style = "color: #500050;",
         center = FALSE,
         menu = "ending",
+        pageContainer(
         h2("¿Qué sigue?", class = "header dark shadow-dark"),
         fluidRow(column(12, includeMarkdown("./inst/app/www/Conclusion.md"))),
         #includeMarkdown("./inst/app/www/Conclusion.Rmd"),
-        h3(class = "footer big",
+        p(class = "footer big",
            "Este proyecto fue desarrollado como una colaboración institucional entre",
            tags$a(href="http://enesmerida.unam.mx",
                   "ENES Mérida",
@@ -166,10 +178,9 @@ app_ui <- function(request) {
                   target = "_blank"),
            ".\n",
            "La investigación y programación fueron realizadas por Dra. Aline
-           Romero-Natale y Dr. Arturo Sanchez-Porras"
+           Romero-Natale y Dr. Arturo Sanchez-Porras."
            )
-
-           #![CONABIO](logo_conabio.png) ![CONAHCYT](logo_conacyt.png) ![ENES Mérida](logo_enes.png) ![UAEH](logo_uaeh.png))
+        )
       )
     )
   )
