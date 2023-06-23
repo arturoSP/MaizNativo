@@ -8,7 +8,8 @@
 #' @import dplyr
 #' @import ggplot2
 #' @import tm
-#' @importFrom stringr str_detect
+#' @importFrom stringr str_sub
+#' @importFrom stringr str_replace_all
 #' @importFrom tidyr pivot_longer
 #' @importFrom ggpubr ggarrange
 #' @importFrom ggwordcloud geom_text_wordcloud
