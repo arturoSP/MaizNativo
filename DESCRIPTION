@@ -1,6 +1,6 @@
 Package: MaizNativo
 Title: Maíces nativos de México
-Version: 0.0.9
+Version: 0.1.0
 Authors@R: c(
     person("Arturo", "Sanchez-Porras", , "sp.arturo@gmail.com", role = c("cre", "aut")),
     person("Aline", "Romero-Natale", , "aline_natale@hotmail.com", role = "aut")
