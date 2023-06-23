@@ -25,6 +25,16 @@ plotGrano <- function(maizSelecto){
                                        "GranosHilera"),
                             labels = c("Grosor", "Longitud", "Anchura", "Granos por hilera"),
                             ordered = T))
+  granosCuant <- if(dim(granosCuant)[1] > 0){
+    granosCuant
+  } else {
+    data.frame(Id = 0,
+               RazaPrimaria = unique(maizSelecto$RazaPrimaria)[1],
+               Metrica = c("Grosor", "Longitud",
+                           "Anchura", "Hilera"),
+               Valor = 0)
+  }
+
 
   granosCuali <- maizSelecto %>%
     select(Id, RazaPrimaria, ColorGrano) %>%
@@ -79,16 +89,30 @@ plotGrano <- function(maizSelecto){
     ggtitle("Color del grano")+
     ylab("Composición")
 
-  p2 <- granosCuant %>%
-    ggplot(aes(x = Metrica, y = Valor, fill = RazaPrimaria))+
-    geom_violin(color = "gray80")+
-    #geom_boxplot()+
-    facet_wrap(facets = ~Metrica, scales = "free", nrow = 1)+
-    ylab("[cm]")+
-    theme_classic()+
-    temabottom+
-    scale_fill_manual(values = coloresTransparencia)+
-    ggtitle("Características del grano")
+  p2 <- if(granosCuant[1,1] != 0){
+    granosCuant %>%
+      ggplot(aes(x = Metrica, y = Valor, fill = RazaPrimaria))+
+      geom_violin(color = "gray80")+
+      facet_wrap(facets = ~Metrica, scales = "free", nrow = 1)+
+      ylab("[cm]")+
+      theme_classic()+
+      temabottom+
+      scale_fill_manual(values = coloresTransparencia)+
+      ggtitle("Características del grano")
+  } else {
+    granosCuant %>%
+      ggplot(aes(x = Metrica, y = Valor, fill = RazaPrimaria))+
+      geom_text(aes(label = "No hay datos"))+
+      facet_wrap(facets = ~Metrica, scales = "free", nrow = 1)+
+      theme_classic()+
+      temabottom+
+      theme(axis.text = element_blank(),
+            axis.title = element_blank())+
+      scale_fill_manual(values = coloresTransparencia)+
+      ggtitle("Características del grano")
+  }
+
+
 
   pf <- ggpubr::ggarrange(p1, p2)
   return(pf)

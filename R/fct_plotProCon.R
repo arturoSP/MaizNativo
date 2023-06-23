@@ -17,7 +17,7 @@
 # data pros y contras ----
 plotProCon <- function(maizSelecto){
   agric <- maizSelecto %>%
-    select(Id, RazaPrimaria, GpoIndigenaAgricultor:PorMejorar)
+    select(Id, RazaPrimaria, AFavor, EnContra)
 
   AFavor <- agric %>%
     filter(AFavor != "") %>%
@@ -25,17 +25,20 @@ plotProCon <- function(maizSelecto){
     as.vector()
 
   CorpAFavor <- Corpus(VectorSource(AFavor))
-  CorpAFavor[["1"]][["content"]]
   CorpAFavor <- tm_map(CorpAFavor, removePunctuation)
-  CorpAFavor[["1"]][["content"]]
+  CorpAFavor[["1"]][["content"]] <- if(dim(AFavor)[1] > 1){
+    str_sub(CorpAFavor[["1"]][["content"]], start = 2)
+  } else {
+    CorpAFavor[["1"]][["content"]]
+  }
+  CorpAFavor[["1"]][["content"]] <- str_replace_all(CorpAFavor[["1"]][["content"]], "\n", "")
   CorpAFavor <- tm_map(CorpAFavor, tolower)
   CorpAFavor <- tm_map(CorpAFavor, removeWords, c("y", "que", "del", "el", "La",
                                                   "la", "en", "de", "por", "muy",
                                                   "para", "casi", "tiene", "esta",
                                                   "plagas", "gorgojo", "los",
                                                   "todo", "poco", "mucho", "las",
-                                                  "no", "porque", "son", "cbuen"))
-  CorpAFavor[["1"]][["content"]]
+                                                  "no", "porque", "son", "nd"))
   MatrAFavor <- termFreq(CorpAFavor[["1"]][["content"]]) %>% as.data.frame()
   colnames(MatrAFavor) <- c("cuenta")
   MatrAFavor$palabra <- rownames(MatrAFavor)
@@ -45,6 +48,9 @@ plotProCon <- function(maizSelecto){
   } else {
     MatrAFavor
   }
+  MatrAFavor[1,2] <- ifelse(MatrAFavor[1,2] == "character0",
+                            "No hubo\nregistros",
+                            MatrAFavor[1,2])
   p1 <- ggplot(MatrAFavor,
                aes(label = palabra, size = as.numeric(cuenta), color = as.numeric(cuenta)))+
     ggwordcloud::geom_text_wordcloud()+
@@ -59,24 +65,26 @@ plotProCon <- function(maizSelecto){
     as.vector()
 
   CorpEnContra <- Corpus(VectorSource(EnContra))
-  CorpEnContra[["1"]][["content"]]
   CorpEnContra <- tm_map(CorpEnContra, removePunctuation)
-  CorpEnContra[["1"]][["content"]]
+  CorpEnContra[["1"]][["content"]] <- if(dim(AFavor)[1] > 1){
+    str_sub(CorpEnContra[["1"]][["content"]], start = 2)
+  } else {
+    CorpEnContra[["1"]][["content"]]
+  }
+  CorpEnContra[["1"]][["content"]] <- str_replace_all(CorpEnContra[["1"]][["content"]], "\n", "")
   CorpEnContra <- tm_map(CorpEnContra, tolower)
-  CorpEnContra <- tm_map(CorpEnContra, removeWords, c("y", "que", "del", "el", "Lo",
+  CorpEnContra <- tm_map(CorpEnContra, removeWords, c("y", "que", "del", "el",
                                                       "la", "en", "de", "sin", "lo",
                                                       "nada", "bien", "ninguna",
                                                       "comentarios", "nada", "no", "negativo",
                                                       "todo", "hay", "con", "por",
-                                                      "para", "casi", "tiene",
-                                                      "plagas", "gorgojo", "los",
+                                                      "para", "casi", "tiene", "los",
                                                       "poco", "mucho",
                                                       "las", "no", "para", "porque", "son",
                                                       "está", "muy", "más",
                                                       "algo", "veces", "a", "nd",
                                                       "le", "se", "gusta", "\\n",
-                                                      "fácil", "cuando", "muchas", "muchos",
-                                                      "cque"
+                                                      "fácil", "cuando", "muchas", "muchos"
   ))
   CorpEnContra[["1"]][["content"]]
   MatrEnContra <- termFreq(CorpEnContra[["1"]][["content"]]) %>% as.data.frame()
@@ -88,6 +96,9 @@ plotProCon <- function(maizSelecto){
   } else {
     MatrEnContra
   }
+  MatrEnContra[1,2] <- ifelse(MatrEnContra[1,2] == "character0",
+                            "No hubo\nregistros",
+                            MatrEnContra[1,2])
   p2 <- ggplot(MatrEnContra,
                aes(label = palabra, size = as.numeric(cuenta), color = as.numeric(cuenta)))+
     ggwordcloud::geom_text_wordcloud()+

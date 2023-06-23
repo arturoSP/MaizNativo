@@ -78,7 +78,7 @@ plotUsos <- function(maizSelecto){
     group_by(RazaPrimaria) %>%
     reframe(Total = sum(Valor))
 
-  p1 <- granosU %>%
+  granU <- granosU %>%
     group_by(RazaPrimaria) %>%
     summarise(across(.cols = c(u_Abono:u_Totomoxtle), .fns = sum)) %>%
     tidyr::pivot_longer(cols = c(u_Abono:u_Totomoxtle),
@@ -87,29 +87,85 @@ plotUsos <- function(maizSelecto){
                         names_prefix = "u_") %>%
     left_join(usosUsos) %>%
     mutate(Porcentaje = Valor / Total) %>%
-    ggplot(aes(x = RazaPrimaria, y = Porcentaje, fill = Uso))+
-    geom_col(color = "gray80", alpha = 0.7)+
-    facet_wrap(~RazaPrimaria, nrow = 1, scales = "free_x")+
-    scale_fill_manual(values = coloresTransparencia)+
-    theme_classic()+
-    temabottom+
-    ggtitle("Usos en general")+
-    ylab("Proporción de uso")
+    filter(Valor != 0)
 
-  p2 <- granosU %>%
+  granU <- if(dim(granU)[1] > 0){
+    granU
+    } else {
+      data.frame(RazaPrimaria = unique(granosU$RazaPrimaria),
+                 Uso = "No hay datos",
+                 Valor = 0,
+                 Total = 0,
+                 Porcentaje = 0)
+    }
+
+  p1 <- if(granU[1,2] != "No hay datos"){
+    granU %>%
+      ggplot(aes(x = RazaPrimaria, y = Porcentaje, fill = Uso))+
+      geom_col(color = "gray80", alpha = 0.7)+
+      facet_wrap(~RazaPrimaria, nrow = 1, scales = "free_x")+
+      scale_fill_manual(values = coloresTransparencia)+
+      theme_classic()+
+      temabottom+
+      ggtitle("Usos en general")+
+      ylab("Proporción de uso")
+  } else {
+    granU %>%
+      ggplot(aes(x = RazaPrimaria, y = Porcentaje, fill = Uso))+
+      geom_text(aes(label = "No hay datos"))+
+      facet_wrap(~RazaPrimaria, nrow = 1, scales = "free_x")+
+      scale_fill_manual(values = coloresTransparencia)+
+      theme_classic()+
+      temabottom+
+      theme(axis.title = element_blank(),
+            axis.text = element_blank())+
+      ggtitle("Usos en general")+
+      ylab("Proporción de uso")
+  }
+
+
+  granG <- granosU %>%
     group_by(RazaPrimaria) %>%
     summarise(across(.cols = c(Atole:Totopo), .fns = sum)) %>%
     tidyr::pivot_longer(cols = c(Atole:Totopo), names_to = "Uso", values_to = "Valor") %>%
     left_join(granosUsos) %>%
     mutate(Porcentaje = Valor / Total) %>%
-    ggplot(aes(x = RazaPrimaria, y = Porcentaje, fill = Uso))+
-    geom_col(color = "gray80", alpha = 0.7)+
-    facet_wrap(~RazaPrimaria, nrow = 1, scales = "free_x")+
-    scale_fill_manual(values = coloresTransparencia)+
-    theme_classic()+
-    temabottom+
-    ggtitle("Usos del grano")+
-    ylab("Proporción de uso")
+    filter(Valor != 0)
+
+  granG <- if(dim(granG)[1] > 0){
+    granG
+  } else {
+    data.frame(RazaPrimaria = unique(granosU$RazaPrimaria),
+               Uso = "No hay datos",
+               Valor = 0,
+               Total = 0,
+               Porcentaje = 0)
+  }
+
+  p2 <- if(granG[1,2] != "No hay datos"){
+    granG %>%
+      ggplot(aes(x = RazaPrimaria, y = Porcentaje, fill = Uso))+
+      geom_col(color = "gray80", alpha = 0.7)+
+      facet_wrap(~RazaPrimaria, nrow = 1, scales = "free_x")+
+      scale_fill_manual(values = coloresTransparencia)+
+      theme_classic()+
+      temabottom+
+      ggtitle("Usos del grano")+
+      ylab("Proporción de uso")
+  } else {
+    granG %>%
+      ggplot(aes(x = RazaPrimaria, y = Porcentaje, fill = Uso))+
+      geom_text(aes(label = "No hay datos"))+
+      facet_wrap(~RazaPrimaria, nrow = 1, scales = "free_x")+
+      scale_fill_manual(values = coloresTransparencia)+
+      theme_classic()+
+      temabottom+
+      theme(axis.title = element_blank(),
+            axis.text = element_blank())+
+      ggtitle("Usos del grano")+
+      ylab("Proporción de uso")
+  }
+
 
   pf <- ggpubr::ggarrange(p1, p2)
   return(pf)

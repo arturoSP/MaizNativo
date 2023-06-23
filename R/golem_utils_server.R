@@ -108,8 +108,8 @@ mapea <- function(maizSelecto){
                       popup = maizSelecto$RazaPrimaria) %>%
     addLegend(position = "bottomright",
               opacity = 1,
-              colors = unique(colorMapa[,3]), #unique(maizSelecto$RazaPrimaria),
-              labels = unique(colorMapa[,1])) #unique(maizSelecto$RazaPrimaria))
+              colors = unique(colorMapa[,3]),
+              labels = unique(colorMapa[,1]))
 }
 
 #' función para filtrar
