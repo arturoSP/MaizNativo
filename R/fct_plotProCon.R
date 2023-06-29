@@ -42,6 +42,7 @@ plotProCon <- function(maizSelecto){
                                                   "no", "porque", "son", "nd"))
   MatrAFavor <- termFreq(CorpAFavor[["1"]][["content"]]) %>% as.data.frame()
   colnames(MatrAFavor) <- c("cuenta")
+  MatrAFavor$cuenta <-  floor(MatrAFavor$cuenta / max(MatrAFavor$cuenta) * 100)
   MatrAFavor$palabra <- rownames(MatrAFavor)
   MatrAFavor <-  MatrAFavor %>% arrange(desc(cuenta))
   MatrAFavor <- if(nrow(MatrAFavor) >= 25) {
@@ -57,7 +58,9 @@ plotProCon <- function(maizSelecto){
     ggwordcloud::geom_text_wordcloud()+
     scale_size_area(max_size = 15)+
     scale_color_gradient2(low = "darkred", mid = "#FFDB48", high = "purple")+
-    theme_classic()+
+    theme(panel.background = element_rect(fill = "white",
+                                          color = "black"),
+          title = element_text(size = 12, face = "bold"))+
     ggtitle("A los productores les gusta:")
 
   EnContra <- agric %>%
@@ -90,6 +93,7 @@ plotProCon <- function(maizSelecto){
   CorpEnContra[["1"]][["content"]]
   MatrEnContra <- termFreq(CorpEnContra[["1"]][["content"]]) %>% as.data.frame()
   colnames(MatrEnContra) <- c("cuenta")
+  MatrEnContra$cuenta <- floor(MatrEnContra$cuenta / max(MatrEnContra$cuenta) * 100)
   MatrEnContra$palabra <- rownames(MatrEnContra)
   MatrEnContra <-  MatrEnContra %>% arrange(desc(cuenta))
   MatrEnContra <- if(nrow(MatrEnContra) >= 25) {
@@ -105,7 +109,9 @@ plotProCon <- function(maizSelecto){
     ggwordcloud::geom_text_wordcloud()+
     scale_size_area(max_size = 15)+
     scale_color_gradient2(low = "darkred", mid = "#FFDB48", high = "purple")+
-    theme_classic()+
+    theme(panel.background = element_rect(fill = "white",
+                                          color = "black"),
+          title = element_text(size = 12, face = "bold"))+
     ggtitle("A los productores no les gusta:")
 
   pf <- ggpubr::ggarrange(p1, p2, nrow = 1)

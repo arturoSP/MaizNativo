@@ -6,6 +6,7 @@
 #' @import fullPage
 #' @import shinycssloaders
 #' @import leaflet
+#' @import plotly
 #' @importFrom magrittr %>%
 #'
 #' @noRd
@@ -138,7 +139,10 @@ app_ui <- function(request) {
                      withSpinner(plotOutput("grafProCon", height = "600px"),
                                  type = 1)),
             tabPanel("Usos principales",
-                     withSpinner(plotOutput("grafUsos", height = "600px"),
+                     withSpinner(plotlyOutput("grafUsos1", height = "600px"),
+                                 type = 1)),
+            tabPanel("Usos  del grano",
+                     withSpinner(plotlyOutput("grafUsos2", height = "600px"),
                                  type = 1))
           ),
           h4(class = "small footer",
@@ -150,6 +154,7 @@ app_ui <- function(request) {
                    Instituto Nacional de Investigaciones Forestales, Agrícolas y Pecuarias;
                    Instituto Nacional de Ecología y cambio Climático. México.")
         )
+      )
       ),
       pageSection(style = "color: #500050;",
         center = FALSE,
@@ -158,8 +163,7 @@ app_ui <- function(request) {
         h2("¿Qué sigue?", class = "header dark shadow-dark"),
         fluidRow(column(12, includeMarkdown("./inst/app/www/Conclusion.md"))),
         #includeMarkdown("./inst/app/www/Conclusion.Rmd"),
-        p(class = "footer big",
-           "Este proyecto fue desarrollado como una colaboración institucional entre",
+        p("Este proyecto fue desarrollado como una colaboración institucional entre",
            tags$a(href="http://enesmerida.unam.mx",
                   "ENES Mérida",
                   target = "_blank"),
@@ -177,13 +181,12 @@ app_ui <- function(request) {
                   "CONABIO",
                   target = "_blank"),
            ".\n",
-           "La investigación y programación fueron realizadas por Dra. Aline
+           "Diseño, investigación y programación realizados por Dra. Aline
            Romero-Natale y Dr. Arturo Sanchez-Porras."
            )
         )
       )
     )
-  )
 }
 
 #' Add external Resources to the Application

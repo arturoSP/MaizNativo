@@ -4,6 +4,7 @@
 #'     DO NOT REMOVE.
 #' @import shiny
 #' @importFrom magrittr %>%
+#' @importFrom plotly renderPlotly
 #' @noRd
 
 app_server <- function(input, output, session) {
@@ -48,7 +49,9 @@ app_server <- function(input, output, session) {
 
   output$grafProCon <- renderPlot(plotProCon(maizSelecto()))
 
-  output$grafUsos <- renderPlot(plotUsos(maizSelecto()))
+  output$grafUsos1 <- renderPlotly(plotUsos(maizSelecto())[[1]])
+
+  output$grafUsos2 <- renderPlotly(plotUsos(maizSelecto())[[2]])
 
   output$complejoText1 <- renderText(complejoRac()[[1]])
 

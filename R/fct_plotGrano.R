@@ -79,7 +79,7 @@ plotGrano <- function(maizSelecto){
     summarise(across(.cols = c(amarillo:rosa), .fns = sum)) %>%
     tidyr::pivot_longer(cols = c(amarillo:rosa), names_to = "Color", values_to = "Valor") %>%
     left_join(granosColor) %>%
-    mutate(Porcentaje = Valor / Total) %>%
+    mutate(Porcentaje = Valor / Total * 100) %>%
     ggplot(aes(x = RazaPrimaria, y = Porcentaje, fill = Color))+
     geom_col(color = "gray80", alpha = 0.7)+
     facet_wrap(~RazaPrimaria, nrow = 1, scales = "free_x")+
@@ -87,7 +87,7 @@ plotGrano <- function(maizSelecto){
     theme_classic()+
     temabottom+
     ggtitle("Color del grano")+
-    ylab("Composición")
+    ylab("Composición de las muestras [%]")
 
   p2 <- if(granosCuant[1,1] != 0){
     granosCuant %>%

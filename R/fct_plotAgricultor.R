@@ -24,7 +24,7 @@ plotAgricultor <- function(maizSelecto){
         ggplot(aes(x = RazaPrimaria, y = EdadAgricultor, fill = RazaPrimaria))+
         geom_violin(color = "gray80")+
         facet_wrap(facets = ~RazaPrimaria, scales = "free_x", nrow = 1)+
-        ylab("Años")+
+        ylab("Edad en años")+
         theme_classic()+
         temabottom +
         scale_fill_manual(values = coloresTransparencia)+
@@ -57,7 +57,7 @@ plotAgricultor <- function(maizSelecto){
       gInd %>%
         ggplot(aes(x = RazaPrimaria, y = Cuenta, fill = GpoIndigenaAgricultor))+
         geom_col(position = "stack")+
-        ylab("Productores")+
+        ylab("Número de productores")+
         facet_wrap(facets = ~RazaPrimaria, scales = "free_x", nrow = 1)+
         theme_classic()+
         temabottom +

@@ -86,7 +86,7 @@ plotUsos <- function(maizSelecto){
                         values_to = "Valor",
                         names_prefix = "u_") %>%
     left_join(usosUsos) %>%
-    mutate(Porcentaje = Valor / Total) %>%
+    mutate(Porcentaje = Valor / Total * 100) %>%
     filter(Valor != 0)
 
   granU <- if(dim(granU)[1] > 0){
@@ -108,7 +108,7 @@ plotUsos <- function(maizSelecto){
       theme_classic()+
       temabottom+
       ggtitle("Usos en general")+
-      ylab("Proporción de uso")
+      ylab("Proporción de uso [%]")
   } else {
     granU %>%
       ggplot(aes(x = RazaPrimaria, y = Porcentaje, fill = Uso))+
@@ -120,7 +120,7 @@ plotUsos <- function(maizSelecto){
       theme(axis.title = element_blank(),
             axis.text = element_blank())+
       ggtitle("Usos en general")+
-      ylab("Proporción de uso")
+      ylab("Proporción de uso [%]")
   }
 
 
@@ -129,7 +129,7 @@ plotUsos <- function(maizSelecto){
     summarise(across(.cols = c(Atole:Totopo), .fns = sum)) %>%
     tidyr::pivot_longer(cols = c(Atole:Totopo), names_to = "Uso", values_to = "Valor") %>%
     left_join(granosUsos) %>%
-    mutate(Porcentaje = Valor / Total) %>%
+    mutate(Porcentaje = Valor / Total * 100) %>%
     filter(Valor != 0)
 
   granG <- if(dim(granG)[1] > 0){
@@ -151,7 +151,7 @@ plotUsos <- function(maizSelecto){
       theme_classic()+
       temabottom+
       ggtitle("Usos del grano")+
-      ylab("Proporción de uso")
+      ylab("Proporción de uso [%]")
   } else {
     granG %>%
       ggplot(aes(x = RazaPrimaria, y = Porcentaje, fill = Uso))+
@@ -163,10 +163,13 @@ plotUsos <- function(maizSelecto){
       theme(axis.title = element_blank(),
             axis.text = element_blank())+
       ggtitle("Usos del grano")+
-      ylab("Proporción de uso")
+      ylab("Proporción de uso [%]")
   }
 
+  p1 <- plotly::ggplotly(p1)
+  p2 <- plotly::ggplotly(p2)
 
-  pf <- ggpubr::ggarrange(p1, p2)
+  pf <- list(p1, p2)
+  #pf <- ggpubr::ggarrange(p1, p2)
   return(pf)
 }
