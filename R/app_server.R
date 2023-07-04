@@ -3,12 +3,11 @@
 #' @param input,output,session Internal parameters for {shiny}.
 #'     DO NOT REMOVE.
 #' @import shiny
+#' @import echarts4r
 #' @importFrom magrittr %>%
-#' @importFrom plotly renderPlotly
 #' @noRd
 
 app_server <- function(input, output, session) {
-
   complejoRctv <- reactive(input$complejo1)
 
   listaCompRaza <- reactive({
@@ -41,17 +40,21 @@ app_server <- function(input, output, session) {
 
   output$mapaF <- renderLeaflet(mapa1())
 
-  output$grafGranos <- renderPlot(plotGrano(maizSelecto()))
+  output$grafGranos1 <- echarts4r::renderEcharts4r(plotGrano(maizSelecto())[[1]])
 
-  output$grafMazorcas <- renderPlot(plotMazorca(maizSelecto()))
+  output$grafGranos2 <- echarts4r::renderEcharts4r(plotGrano(maizSelecto())[[2]])
 
-  output$grafAgricultores <- renderPlot(plotAgricultor(maizSelecto()))
+  output$grafMazorcas <- echarts4r::renderEcharts4r(plotMazorca(maizSelecto()))
 
-  output$grafProCon <- renderPlot(plotProCon(maizSelecto()))
+  output$grafAgricultores <- echarts4r::renderEcharts4r(plotAgricultor(maizSelecto()))
 
-  output$grafUsos1 <- renderPlotly(plotUsos(maizSelecto())[[1]])
+  output$grafProCon1 <- echarts4r::renderEcharts4r(plotProCon(maizSelecto())[[1]])
 
-  output$grafUsos2 <- renderPlotly(plotUsos(maizSelecto())[[2]])
+  output$grafProCon2 <- echarts4r::renderEcharts4r(plotProCon(maizSelecto())[[2]])
+
+  output$grafUsos1 <- echarts4r::renderEcharts4r(plotUsos(maizSelecto())[[1]])
+
+  output$grafUsos2 <- echarts4r::renderEcharts4r(plotUsos(maizSelecto())[[2]])
 
   output$complejoText1 <- renderText(complejoRac()[[1]])
 

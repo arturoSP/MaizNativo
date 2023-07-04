@@ -6,9 +6,9 @@
 #'
 #' @noRd
 #' @import dplyr
-#' @import ggplot2
-#' @importFrom tidyr pivot_longer
+#' @import echarts4r
 #' @importFrom magrittr %>%
+#' @importFrom tidyr pivot_longer
 #'
 ## data de mazorcas ----
 plotMazorca <- function(maizSelecto){
@@ -24,41 +24,49 @@ plotMazorca <- function(maizSelecto){
                             labels = c("Altura de la mazorca",
                                        "Longitud",
                                        "Diámetro",
-                                       "Hileras por mazorca",
-                                       "Número de mazorcas"),
-                            ordered = T))
+                                       "Hileras por\nmazorca",
+                                       "Número de\nmazorcas"),
+                            ordered = T)) %>%
+    filter(Metrica != "Altura de la mazorca")
   mazorcas <- if(dim(mazorcas)[1] > 0){
     mazorcas
   } else {
     data.frame(Id = 0,
-               RazaPrimaria = unique(maizSelecto$RazaPrimaria),
+               RazaPrimaria = unique(maizSelecto$RazaPrimaria)[1],
                Metrica = c("Grosor", "Longitud",
                            "Anchura", "Hilera"),
                Valor = 0)
   }
 
   p1 <- if(mazorcas[1,1] != 0){
-    mazorcas %>%
-      ggplot(aes(x = Metrica, y = Valor, fill = RazaPrimaria))+
-      geom_violin(color = "gray80")+
-      facet_wrap(facets = ~Metrica, scales = "free", nrow = 1)+
-      ylab("[cm]")+
-      theme_classic()+
-      temabottom +
-      scale_fill_manual(values = coloresTransparencia)+
-      ggtitle("Características de la mazorca")
+    mazorcas |>
+      group_by(RazaPrimaria) |>
+      echarts4r::e_chart(Metrica, timeline = TRUE) |>
+      echarts4r::e_color(background = "#fffff7") |>
+      echarts4r::e_scatter(Valor, colorBy = 'data',
+                symbol_size = 25,
+                legend = FALSE) |>
+      echarts4r::e_toolbox_feature('saveAsImage') |>
+      echarts4r::e_title("Características de la mazorca")
   } else {
-    mazorcas %>%
-      ggplot(aes(x = Metrica, y = Valor, fill = RazaPrimaria))+
-      geom_text(aes(label = "No hay datos"))+
-      facet_wrap(facets = ~Metrica, scales = "free", nrow = 1)+
-      theme_classic()+
-      temabottom +
-      theme(axis.text = element_blank(),
-            axis.title = element_blank())+
-      scale_fill_manual(values = coloresTransparencia)+
-      ggtitle("Características de la mazorca")
-  }
+    mazorcas |>
+      group_by(RazaPrimaria) |>
+      echarts4r::e_chart(Metrica, timeline = TRUE) |>
+      echarts4r::e_color(background = "#fffff7") |>
+      echarts4r::e_graphic_g(type = 'text', rotation = 0,
+                  left = 'center', top = 'center',
+                  bounding = 'raw', right = 110,
+                  bottom = 110, z = 100,
+                  style = list(
+                    fill = '#000',
+                    text = 'No hay datos',
+                    font = 'bold 36px sans-serif'
+                  )
+      ) |>
+      echarts4r::e_title("Características del grano")
+}
+
+  p1 <- echarts4r::e_flip_coords(p1)
 
   return(p1)
 }
