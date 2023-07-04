@@ -48,9 +48,8 @@ información desde una ventana de navegador visitando la plataforma
 
 ## Paquetes requeridos
 
-dplyr, fullPage, ggplot2, ggpubr, ggwordcloud, golem (\>= 0.4.0),
-leaflet, magrittr, pkgload, shiny (\>= 1.7.4), shinycssloaders, stringr,
-tidyr, tm
+dplyr, echarts4r, fullPage, ggplot2, golem (\>= 0.4.0), leaflet,
+magrittr, shiny (\>= 1.7.4), shinycssloaders, stringr, tidyr, tm
 
 ## Proyecto desarrollado con apoyo de:
 
