@@ -43,24 +43,28 @@ plotProCon <- function(maizSelecto){
   MatrAFavor$cuenta <-  floor(MatrAFavor$cuenta / max(MatrAFavor$cuenta) * 100)
   MatrAFavor$palabra <- rownames(MatrAFavor)
   MatrAFavor <-  MatrAFavor %>% arrange(desc(cuenta))
-  MatrAFavor <- if(nrow(MatrAFavor) >= 25) {
-    MatrAFavor[c(1:25),]
+  MatrAFavor <- if(nrow(MatrAFavor) >= 30) {
+    MatrAFavor[c(1:30),]
   } else {
-    MatrAFavor
+    MatrAFavor[c(1:nrow(MatrAFavor)),]
   }
   MatrAFavor[1,2] <- ifelse(MatrAFavor[1,2] == "character0",
                             "No hubo\nregistros",
                             MatrAFavor[1,2])
+  MatrAFavor$cuenta <- MatrAFavor$cuenta + runif(nrow(MatrAFavor))
 
   p1 <- MatrAFavor |>
-    e_chart() |>
-    e_color(background = "#fffce2") |>
-    e_cloud(word = palabra, freq = cuenta, shape = "diamond", sizeRange = c(20,60),
-            textStyle = list(color = "#3d5fec"),
-            emphasis = list(focus = "self",
-                            textStyle = list(textShadowBlur = 3, textShadowColor = "#a000c7"))) |>
-    e_title("A los productores les gusta:") |>
-    e_toolbox_feature('saveAsImage')
+    echarts4r::e_color_range(cuenta, color, colors = c("#59c4e6", "#edafda")) |>
+    echarts4r::e_chart() |>
+    echarts4r::e_color(background = "#fffce2") |>
+    echarts4r::e_cloud(word = palabra,
+            freq = cuenta,
+            color = color,
+            shape = "circle",
+            sizeRange = c(15,100),
+            rotationRange = c(0,45)) |>
+    echarts4r::e_title("A los productores les gusta:") |>
+    echarts4r::e_toolbox_feature('saveAsImage')
 
   EnContra <- agric %>%
     filter(EnContra != "") %>%
@@ -95,24 +99,28 @@ plotProCon <- function(maizSelecto){
   MatrEnContra$cuenta <- floor(MatrEnContra$cuenta / max(MatrEnContra$cuenta) * 100)
   MatrEnContra$palabra <- rownames(MatrEnContra)
   MatrEnContra <-  MatrEnContra %>% arrange(desc(cuenta))
-  MatrEnContra <- if(nrow(MatrEnContra) >= 25) {
-    MatrEnContra[c(1:25),]
+  MatrEnContra <- if(nrow(MatrEnContra) >= 30) {
+    MatrEnContra[c(1:30),]
   } else {
-    MatrEnContra
+    MatrEnContra[c(1:nrow(MatrEnContra)),]
   }
   MatrEnContra[1,2] <- ifelse(MatrEnContra[1,2] == "character0",
                               "No hubo\nregistros",
                               MatrEnContra[1,2])
+  MatrEnContra$cuenta <- MatrEnContra$cuenta + runif(nrow(MatrEnContra))
 
   p2 <- MatrEnContra |>
-    e_chart() |>
-    e_color(background = "#fffce2") |>
-    e_cloud(word = palabra, freq = cuenta, shape = "diamond", sizeRange = c(20,60),
-            textStyle = list(color = "#a000c7"),
-            emphasis = list(focus = "self",
-                            textStyle = list(textShadowBlur = 3, textShadowColor = "#3d5fec"))) |>
-    e_title("A los productores no les gusta:") |>
-    e_toolbox_feature('saveAsImage')
+    echarts4r::e_color_range(cuenta, color, colors = c("#edafda", "#59c4e6")) |>
+    echarts4r::e_chart() |>
+    echarts4r::e_color(background = "#fffce2") |>
+    echarts4r::e_cloud(word = palabra,
+            freq = cuenta,
+            color = color,
+            shape = "circle",
+            sizeRange = c(15,100),
+            rotationRange = c(0,45)) |>
+    echarts4r::e_title("A los productores no les gusta:") |>
+    echarts4r::e_toolbox_feature('saveAsImage')
 
   pf <- list(p1, p2)
   return(pf)

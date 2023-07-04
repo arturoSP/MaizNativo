@@ -26,41 +26,41 @@ plotAgricultor <- function(maizSelecto){
       filter(!is.na(RazaPrimaria))
     if(dim(gInd)[1] > 0){
       gInd |>
-        e_charts(RazaPrimaria) |>
-        e_color(background = "#fffce2") |>
-        e_bar(Chinanteco, stack = "Indigena") |>
-        e_bar(Chol, stack = "Indigena") |>
-        e_bar(Cuicateco, stack = "Indigena") |>
-        e_bar(Huasteco, stack = "Indigena") |>
-        e_bar(Huichol, stack = "Indigena") |>
-        e_bar(Mam, stack = "Indigena") |>
-        e_bar(Maya, stack = "Indigena") |>
-        e_bar(Mazateco, stack = "Indigena") |>
-        e_bar(Mestizo, stack = "Indigena") |>
-        e_bar(Mixteco, stack = "Indigena") |>
-        e_bar(Náhuatl, stack = "Indigena") |>
-        e_bar(Otomí, stack = "Indigena") |>
-        e_bar(`Otomí tepehua`, stack = "Indigena") |>
-        e_bar(Pame, stack = "Indigena") |>
-        e_bar(Popoluca, stack = "Indigena") |>
-        e_bar(Tarahumara, stack = "Indigena") |>
-        e_bar(Tlapaneco, stack = "Indigena") |>
-        e_bar(Tojolabal, stack = "Indigena") |>
-        e_bar(Totonaco, stack = "Indigena") |>
-        e_bar(Tzeltal, stack = "Indigena") |>
-        e_bar(Tzotzil, stack = "Indigena") |>
-        e_bar(Zapoteco, stack = "Indigena") |>
-        e_title("Número de agricultores que pertenecen a grupos indígenas") |>
-        e_tooltip(trigger = "item") |>
-        e_grid(right = '15%') |>
-        e_legend(type = 'scroll', orient = 'vertical',
+        echarts4r::e_charts(RazaPrimaria) |>
+        echarts4r::e_color(background = "#fffce2") |>
+        echarts4r::e_bar(Chinanteco, stack = "Indigena") |>
+        echarts4r::e_bar(Chol, stack = "Indigena") |>
+        echarts4r::e_bar(Cuicateco, stack = "Indigena") |>
+        echarts4r::e_bar(Huasteco, stack = "Indigena") |>
+        echarts4r::e_bar(Huichol, stack = "Indigena") |>
+        echarts4r::e_bar(Mam, stack = "Indigena") |>
+        echarts4r::e_bar(Maya, stack = "Indigena") |>
+        echarts4r::e_bar(Mazateco, stack = "Indigena") |>
+        echarts4r::e_bar(Mestizo, stack = "Indigena") |>
+        echarts4r::e_bar(Mixteco, stack = "Indigena") |>
+        echarts4r::e_bar(Náhuatl, stack = "Indigena") |>
+        echarts4r::e_bar(Otomí, stack = "Indigena") |>
+        echarts4r::e_bar(`Otomí tepehua`, stack = "Indigena") |>
+        echarts4r::e_bar(Pame, stack = "Indigena") |>
+        echarts4r::e_bar(Popoluca, stack = "Indigena") |>
+        echarts4r::e_bar(Tarahumara, stack = "Indigena") |>
+        echarts4r::e_bar(Tlapaneco, stack = "Indigena") |>
+        echarts4r::e_bar(Tojolabal, stack = "Indigena") |>
+        echarts4r::e_bar(Totonaco, stack = "Indigena") |>
+        echarts4r::e_bar(Tzeltal, stack = "Indigena") |>
+        echarts4r::e_bar(Tzotzil, stack = "Indigena") |>
+        echarts4r::e_bar(Zapoteco, stack = "Indigena") |>
+        echarts4r::e_title("Número de agricultores que pertenecen a grupos indígenas") |>
+        echarts4r::e_tooltip(trigger = "item") |>
+        echarts4r::e_grid(right = '15%') |>
+        echarts4r::e_legend(type = 'scroll', orient = 'vertical',
                  right = '5', top = '10%') |>
-        e_toolbox_feature('saveAsImage')
+        echarts4r::e_toolbox_feature('saveAsImage')
     } else {
       gInd |>
-        e_chart(RazaPrimaria) |>
-        e_color(background = "#fffce2") |>
-        e_graphic_g(type = 'text', rotation = 0,
+        echarts4r::e_chart(RazaPrimaria) |>
+        echarts4r::e_color(background = "#fffce2") |>
+        echarts4r::e_graphic_g(type = 'text', rotation = 0,
                     left = 'center', top = 'center',
                     bounding = 'raw', right = 110,
                     bottom = 110, z = 100,
@@ -70,7 +70,7 @@ plotAgricultor <- function(maizSelecto){
                       font = 'bold 36px sans-serif'
                     )
         ) |>
-        e_title("Número de agricultores que pertenecen a grupos indígenas")
+        echarts4r::e_title("Número de agricultores que pertenecen a grupos indígenas")
 
     }
   }
@@ -82,7 +82,7 @@ plotAgricultor <- function(maizSelecto){
   #p1 <- plot1(agric)
 
   p2 <- plot2(agric)
-  p2 <- e_flip_coords(p2)
+  p2 <- echarts4r::e_flip_coords(p2)
 
   #pf <- ggpubr::ggarrange(p1, p2, nrow = 1)
   return(p2)

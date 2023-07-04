@@ -8,7 +8,6 @@
 #' @noRd
 
 app_server <- function(input, output, session) {
-
   complejoRctv <- reactive(input$complejo1)
 
   listaCompRaza <- reactive({
@@ -41,21 +40,21 @@ app_server <- function(input, output, session) {
 
   output$mapaF <- renderLeaflet(mapa1())
 
-  output$grafGranos1 <- renderEcharts4r(plotGrano(maizSelecto())[[1]])
+  output$grafGranos1 <- echarts4r::renderEcharts4r(plotGrano(maizSelecto())[[1]])
 
-  output$grafGranos2 <- renderEcharts4r(plotGrano(maizSelecto())[[2]])
+  output$grafGranos2 <- echarts4r::renderEcharts4r(plotGrano(maizSelecto())[[2]])
 
-  output$grafMazorcas <- renderEcharts4r(plotMazorca(maizSelecto()))
+  output$grafMazorcas <- echarts4r::renderEcharts4r(plotMazorca(maizSelecto()))
 
-  output$grafAgricultores <- renderEcharts4r(plotAgricultor(maizSelecto()))
+  output$grafAgricultores <- echarts4r::renderEcharts4r(plotAgricultor(maizSelecto()))
 
-  output$grafProCon1 <- renderEcharts4r(plotProCon(maizSelecto())[[1]])
+  output$grafProCon1 <- echarts4r::renderEcharts4r(plotProCon(maizSelecto())[[1]])
 
-  output$grafProCon2 <- renderEcharts4r(plotProCon(maizSelecto())[[2]])
+  output$grafProCon2 <- echarts4r::renderEcharts4r(plotProCon(maizSelecto())[[2]])
 
-  output$grafUsos1 <- renderEcharts4r(plotUsos(maizSelecto())[[1]])
+  output$grafUsos1 <- echarts4r::renderEcharts4r(plotUsos(maizSelecto())[[1]])
 
-  output$grafUsos2 <- renderEcharts4r(plotUsos(maizSelecto())[[2]])
+  output$grafUsos2 <- echarts4r::renderEcharts4r(plotUsos(maizSelecto())[[2]])
 
   output$complejoText1 <- renderText(complejoRac()[[1]])
 

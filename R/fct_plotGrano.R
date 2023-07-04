@@ -79,40 +79,40 @@ plotGrano <- function(maizSelecto){
 
   p1 <- granosCuali |>
     group_by(RazaPrimaria) |>
-    e_chart(Color, timeline = TRUE) |>
-    e_color(background = "#fffce2") |>
-    e_pie(Valor,
+    echarts4r::e_chart(Color, timeline = TRUE) |>
+    echarts4r::e_color(background = "#fffce2") |>
+    echarts4r::e_pie(Valor,
           percentPrecision = 0,
           label = list(show = FALSE,
                        position = "outside",
                        formatter = '{b}: {d}%')) |>
-    e_tooltip(formatter = e_tooltip_choro_formatter("percent")) |>
-    e_theme_custom('{"color":["#FBEC5D", "#FFF380", "#FFE66D", "#FFA542",
+    echarts4r::e_tooltip(formatter = echarts4r::e_tooltip_choro_formatter("percent")) |>
+    echarts4r::e_theme_custom('{"color":["#FBEC5D", "#FFF380", "#FFE66D", "#FFA542",
                               "#00BFFF", "#0000FF", "#FFFFFF", "#FAFAD2",
                               "#FFFAFA", "#A52A2A", "#FFF8DC", "#D1D1D1",
                               "#800080", "#FFA500", "#000000", "#FF0000",
                               "#FF4500", "#8B0000", "#FFC0CB"]}') |>
-    e_toolbox_feature('saveAsImage') |>
-    e_title("Color de los granos")
+    echarts4r::e_toolbox_feature('saveAsImage') |>
+    echarts4r::e_title("Color de los granos")
 
 
   p2 <- if(granosCuant[1,1] != 0){
     granosCuant |>
       group_by(RazaPrimaria) |>
-      e_chart(Metrica, timeline = TRUE) |>
-      e_color(background = "#fffce2") |>
-      e_scatter(Valor, colorBy = 'data',
+      echarts4r::e_chart(Metrica, timeline = TRUE) |>
+      echarts4r::e_color(background = "#fffce2") |>
+      echarts4r::e_scatter(Valor, colorBy = 'data',
                 symbol_size = 25,
                 legend = FALSE) |>
-      #e_theme_custom('{"color":["#FBEC5D", "#0000FF", "#800080","#FF4500"]}') |>
-      e_toolbox_feature('saveAsImage') |>
-      e_title("Características del grano")
+      #echarts4r::e_theme_custom('{"color":["#FBEC5D", "#0000FF", "#800080","#FF4500"]}') |>
+      echarts4r::e_toolbox_feature('saveAsImage') |>
+      echarts4r::e_title("Características del grano")
   } else {
     granosCuant |>
       group_by(RazaPrimaria) |>
-      e_chart(Metrica, timeline = TRUE) |>
-      e_color(background = "#fffce2") |>
-      e_graphic_g(type = 'text', rotation = 0,
+      echarts4r::e_chart(Metrica, timeline = TRUE) |>
+      echarts4r::e_color(background = "#fffce2") |>
+      echarts4r::e_graphic_g(type = 'text', rotation = 0,
                   left = 'center', top = 'center',
                   bounding = 'raw', right = 110,
                   bottom = 110, z = 100,
@@ -122,10 +122,10 @@ plotGrano <- function(maizSelecto){
                     font = 'bold 36px sans-serif'
                   )
                   ) |>
-      e_title("Características del grano")
+      echarts4r::e_title("Características del grano")
   }
 
-  p2 <- e_flip_coords(p2)
+  p2 <- echarts4r::e_flip_coords(p2)
 
   pf <- list(p1, p2)
   return(pf)

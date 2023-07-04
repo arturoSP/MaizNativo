@@ -88,40 +88,40 @@ plotUsos <- function(maizSelecto){
 
   p1 <- if(!is.na(granosUsos[1,2])){
     granosUsos |>
-      e_charts(RazaPrimaria) |>
-      e_color(background = "#fffce2") |>
-      e_y_axis(formatter = e_axis_formatter(style = "percent"), max = 1) |>
-      e_bar(Atole, stack = "grupo") |>
-      e_bar(Corundas, stack = "grupo") |>
-      e_bar(Elote, stack = "grupo") |>
-      e_bar(Esquites, stack = "grupo") |>
-      e_bar(Forraje, stack = "grupo") |>
-      e_bar(Gorditas, stack = "grupo") |>
-      e_bar(Harina, stack = "grupo") |>
-      e_bar(Hoja, stack = "grupo") |>
-      e_bar(Huacholes, stack = "grupo") |>
-      e_bar(Nixtamal, stack = "grupo") |>
-      e_bar(Panuchos, stack = "grupo") |>
-      e_bar(Pinole, stack = "grupo") |>
-      e_bar(Ponteduro, stack = "grupo") |>
-      e_bar(Pozol, stack = "grupo") |>
-      e_bar(Pozole, stack = "grupo") |>
-      e_bar(Salbutes, stack = "grupo") |>
-      e_bar(Semilla, stack = "grupo") |>
-      e_bar(Tamal, stack = "grupo") |>
-      e_bar(Tesgüino, stack = "grupo") |>
-      e_bar(Tlacoyos, stack = "grupo") |>
-      e_bar(Tomoxtle, stack = "grupo") |>
-      e_bar(Tortilla, stack = "grupo") |>
-      e_bar(Tostada, stack = "grupo") |>
-      e_bar(Totopo, stack = "grupo") |>
-      e_title("Usos del grano") |>
-      e_tooltip(trigger = "item") |>
-      e_grid(right = '15%') |>
-      e_legend(type = 'scroll', orient = 'vertical',
+      echarts4r::e_charts(RazaPrimaria) |>
+      echarts4r::e_color(background = "#fffce2") |>
+      echarts4r::e_y_axis(formatter = echarts4r::e_axis_formatter(style = "percent"), max = 1) |>
+      echarts4r::e_bar(Atole, stack = "grupo") |>
+      echarts4r::e_bar(Corundas, stack = "grupo") |>
+      echarts4r::e_bar(Elote, stack = "grupo") |>
+      echarts4r::e_bar(Esquites, stack = "grupo") |>
+      echarts4r::e_bar(Forraje, stack = "grupo") |>
+      echarts4r::e_bar(Gorditas, stack = "grupo") |>
+      echarts4r::e_bar(Harina, stack = "grupo") |>
+      echarts4r::e_bar(Hoja, stack = "grupo") |>
+      echarts4r::e_bar(Huacholes, stack = "grupo") |>
+      echarts4r::e_bar(Nixtamal, stack = "grupo") |>
+      echarts4r::e_bar(Panuchos, stack = "grupo") |>
+      echarts4r::e_bar(Pinole, stack = "grupo") |>
+      echarts4r::e_bar(Ponteduro, stack = "grupo") |>
+      echarts4r::e_bar(Pozol, stack = "grupo") |>
+      echarts4r::e_bar(Pozole, stack = "grupo") |>
+      echarts4r::e_bar(Salbutes, stack = "grupo") |>
+      echarts4r::e_bar(Semilla, stack = "grupo") |>
+      echarts4r::e_bar(Tamal, stack = "grupo") |>
+      echarts4r::e_bar(Tesgüino, stack = "grupo") |>
+      echarts4r::e_bar(Tlacoyos, stack = "grupo") |>
+      echarts4r::e_bar(Tomoxtle, stack = "grupo") |>
+      echarts4r::e_bar(Tortilla, stack = "grupo") |>
+      echarts4r::e_bar(Tostada, stack = "grupo") |>
+      echarts4r::e_bar(Totopo, stack = "grupo") |>
+      echarts4r::e_title("Usos del grano") |>
+      echarts4r::e_tooltip(trigger = "item") |>
+      echarts4r::e_grid(right = '15%') |>
+      echarts4r::e_legend(type = 'scroll', orient = 'vertical',
                right = '5', top = '10%') |>
-      e_toolbox_feature('saveAsImage') #|>
-      # e_theme_custom('{"color":["#FBEC5D","#FFA542","#00BFFF","#800080","#8B0000","#000000",
+      echarts4r::e_toolbox_feature('saveAsImage') #|>
+      # echarts4r::e_theme_custom('{"color":["#FBEC5D","#FFA542","#00BFFF","#800080","#8B0000","#000000",
       #                           "#FFF380","#FF4500","#000080","#FFA5FF","#A52A2A","#D1D1D1",
       #                           "#FFE66D","#FFA500","#B2B2FF","#A52AA5","#690000","#404040",
       #                           "#FFFF00","#FF6900","#00FF00","#FF00FF","#FF8040","#FFFAFA",
@@ -129,9 +129,9 @@ plotUsos <- function(maizSelecto){
       #                           "#FFFFD1","#A50042","#FFE6A5","#A02020","#800026","#FFF5D1"]}')
   } else {
     granosUsos |>
-      e_chart(RazaPrimaria) |>
-      e_color(background = "#fffce2") |>
-      e_graphic_g(type = 'text', rotation = 0,
+      echarts4r::e_chart(RazaPrimaria) |>
+      echarts4r::e_color(background = "#fffce2") |>
+      echarts4r::e_graphic_g(type = 'text', rotation = 0,
                   left = 'center', top = 'center',
                   bounding = 'raw', right = 110,
                   bottom = 110, z = 100,
@@ -141,42 +141,42 @@ plotUsos <- function(maizSelecto){
                     font = 'bold 36px sans-serif'
                   )
       ) |>
-      e_title("Usos del grano")
+      echarts4r::e_title("Usos del grano")
     }
 
   p2 <- if(!is.na(usosUsos[1,2])){
     usosUsos |>
-      e_charts(RazaPrimaria) |>
-      e_color(background = "#fffce2") |>
-      e_y_axis(formatter = e_axis_formatter(style = "percent"), max = 1) |>
-      e_bar(Abono, stack = "grupo") |>
-      e_bar(Alimento, stack = "grupo") |>
-      e_bar(Combustible, stack = "grupo") |>
-      e_bar(Elote, stack = "grupo") |>
-      e_bar(Forraje, stack = "grupo") |>
-      e_bar(Grano, stack = "grupo") |>
-      e_bar(Hoja, stack = "grupo") |>
-      e_bar(Nixtamal, stack = "grupo") |>
-      e_bar(Otro, stack = "grupo") |>
-      e_bar(Pozole, stack = "grupo") |>
-      e_bar(Semilla, stack = "grupo") |>
-      e_bar(Tortilla, stack = "grupo") |>
-      e_bar(Totomoxtle, stack = "grupo") |>
-      e_title("Usos en general") |>
-      e_tooltip(trigger = "item") |>
-      e_grid(right = '15%') |>
-      e_legend(type = 'scroll', orient = 'vertical',
+      echarts4r::e_charts(RazaPrimaria) |>
+      echarts4r::e_color(background = "#fffce2") |>
+      echarts4r::e_y_axis(formatter = echarts4r::e_axis_formatter(style = "percent"), max = 1) |>
+      echarts4r::e_bar(Abono, stack = "grupo") |>
+      echarts4r::e_bar(Alimento, stack = "grupo") |>
+      echarts4r::e_bar(Combustible, stack = "grupo") |>
+      echarts4r::e_bar(Elote, stack = "grupo") |>
+      echarts4r::e_bar(Forraje, stack = "grupo") |>
+      echarts4r::e_bar(Grano, stack = "grupo") |>
+      echarts4r::e_bar(Hoja, stack = "grupo") |>
+      echarts4r::e_bar(Nixtamal, stack = "grupo") |>
+      echarts4r::e_bar(Otro, stack = "grupo") |>
+      echarts4r::e_bar(Pozole, stack = "grupo") |>
+      echarts4r::e_bar(Semilla, stack = "grupo") |>
+      echarts4r::e_bar(Tortilla, stack = "grupo") |>
+      echarts4r::e_bar(Totomoxtle, stack = "grupo") |>
+      echarts4r::e_title("Usos en general") |>
+      echarts4r::e_tooltip(trigger = "item") |>
+      echarts4r::e_grid(right = '15%') |>
+      echarts4r::e_legend(type = 'scroll', orient = 'vertical',
                right = '5', top = '10%') |>
-      e_toolbox_feature('saveAsImage') #|>
-      # e_theme_custom('{"color":["#FBEC5D","#FFA542","#00BFFF","#800080","#8B0000",
+      echarts4r::e_toolbox_feature('saveAsImage') #|>
+      # echarts4r::e_theme_custom('{"color":["#FBEC5D","#FFA542","#00BFFF","#800080","#8B0000",
       #                           "#FFF380","#FF4500","#000080","#FFA5FF","#A52A2A",
       #                           "#FFE66D","#FFA500","#B2B2FF"]}')
-      # e_theme_custom("usos2")
+      # echarts4r::e_theme_custom("usos2")
     } else {
       granosUsos |>
-        e_chart(RazaPrimaria) |>
-        e_color(background = "#fffce2") |>
-        e_graphic_g(type = 'text', rotation = 0,
+        echarts4r::e_chart(RazaPrimaria) |>
+        echarts4r::e_color(background = "#fffce2") |>
+        echarts4r::e_graphic_g(type = 'text', rotation = 0,
                     left = 'center', top = 'center',
                     bounding = 'raw', right = 110,
                     bottom = 110, z = 100,
@@ -186,11 +186,11 @@ plotUsos <- function(maizSelecto){
                       font = 'bold 36px sans-serif'
                     )
         ) |>
-        e_title("Usos del grano")
+        echarts4r::e_title("Usos del grano")
     }
 
-  p1 <- e_flip_coords(p1)
-  p2 <- e_flip_coords(p2)
+  p1 <- echarts4r::e_flip_coords(p1)
+  p2 <- echarts4r::e_flip_coords(p2)
 
   pf <- list(p1, p2)
   return(pf)

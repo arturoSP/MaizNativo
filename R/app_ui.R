@@ -10,8 +10,8 @@
 #' @importFrom magrittr %>%
 #'
 #' @noRd
+
 app_ui <- function(request) {
-  library(echarts4r)
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
@@ -128,26 +128,26 @@ app_ui <- function(request) {
           h2("Características de tu selección:", class = "header dark shadow-dark"),
           tabsetPanel(
             tabPanel("Color del grano",
-                     withSpinner(echarts4rOutput("grafGranos1", height = "600px"))),
+                     withSpinner(echarts4r::echarts4rOutput("grafGranos1", height = "600px"))),
             tabPanel("Caracteristicas del grano",
-                     withSpinner(echarts4rOutput("grafGranos2", height = "600px"))),
+                     withSpinner(echarts4r::echarts4rOutput("grafGranos2", height = "600px"))),
             tabPanel("Mazorcas",
-                     withSpinner(echarts4rOutput("grafMazorcas", height = "600px"),
+                     withSpinner(echarts4r::echarts4rOutput("grafMazorcas", height = "600px"),
                                  type = 1)),
             tabPanel("Agricultores",
-                     withSpinner(echarts4rOutput("grafAgricultores", height = "600px"),
+                     withSpinner(echarts4r::echarts4rOutput("grafAgricultores", height = "600px"),
                                  type = 1)),
             tabPanel("Usos del grano",
-                     withSpinner(echarts4rOutput("grafUsos1", height = "600px"),
+                     withSpinner(echarts4r::echarts4rOutput("grafUsos1", height = "600px"),
                                  type = 1)),
             tabPanel("Usos  de la planta",
-                     withSpinner(echarts4rOutput("grafUsos2", height = "600px"),
+                     withSpinner(echarts4r::echarts4rOutput("grafUsos2", height = "600px"),
                                  type = 1)),
             tabPanel("Opiniones a favor",
-                     withSpinner(echarts4rOutput("grafProCon1", height = "600px"),
+                     withSpinner(echarts4r::echarts4rOutput("grafProCon1", height = "600px"),
                                  type = 1)),
             tabPanel("Opiniones en contra",
-                     withSpinner(echarts4rOutput("grafProCon2", height = "600px"),
+                     withSpinner(echarts4r::echarts4rOutput("grafProCon2", height = "600px"),
                                  type = 1))
           ),
           h4(class = "small footer",

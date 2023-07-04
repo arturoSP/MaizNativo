@@ -41,19 +41,19 @@ plotMazorca <- function(maizSelecto){
   p1 <- if(mazorcas[1,1] != 0){
     mazorcas |>
       group_by(RazaPrimaria) |>
-      e_chart(Metrica, timeline = TRUE) |>
-      e_color(background = "#fffff7") |>
-      e_scatter(Valor, colorBy = 'data',
+      echarts4r::e_chart(Metrica, timeline = TRUE) |>
+      echarts4r::e_color(background = "#fffff7") |>
+      echarts4r::e_scatter(Valor, colorBy = 'data',
                 symbol_size = 25,
                 legend = FALSE) |>
-      e_toolbox_feature('saveAsImage') |>
-      e_title("Características de la mazorca")
+      echarts4r::e_toolbox_feature('saveAsImage') |>
+      echarts4r::e_title("Características de la mazorca")
   } else {
     mazorcas |>
       group_by(RazaPrimaria) |>
-      e_chart(Metrica, timeline = TRUE) |>
-      e_color(background = "#fffff7") |>
-      e_graphic_g(type = 'text', rotation = 0,
+      echarts4r::e_chart(Metrica, timeline = TRUE) |>
+      echarts4r::e_color(background = "#fffff7") |>
+      echarts4r::e_graphic_g(type = 'text', rotation = 0,
                   left = 'center', top = 'center',
                   bounding = 'raw', right = 110,
                   bottom = 110, z = 100,
@@ -63,10 +63,10 @@ plotMazorca <- function(maizSelecto){
                     font = 'bold 36px sans-serif'
                   )
       ) |>
-      e_title("Características del grano")
+      echarts4r::e_title("Características del grano")
 }
 
-  p1 <- e_flip_coords(p1)
+  p1 <- echarts4r::e_flip_coords(p1)
 
   return(p1)
 }
