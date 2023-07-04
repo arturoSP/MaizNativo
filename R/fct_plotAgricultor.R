@@ -6,76 +6,72 @@
 #'
 #' @noRd
 #' @import dplyr
-#' @import ggplot2
-#' @importFrom stringr str_detect
-#' @importFrom tidyr pivot_longer
-#' @importFrom ggpubr ggarrange
+#' @import echarts4r
+#' @importFrom tidyr pivot_wider
 #' @importFrom magrittr %>%
 #'
 # data de agricultores ----
 plotAgricultor <- function(maizSelecto){
-  # helper functions ----
-  plot1 <- function(agric){
-    eAgr <- agric %>%
-      filter(!is.na(EdadAgricultor)) %>%
-      select(RazaPrimaria, EdadAgricultor)
-    if(dim(eAgr)[1] > 0) {
-      eAgr %>%
-        ggplot(aes(x = RazaPrimaria, y = EdadAgricultor, fill = RazaPrimaria))+
-        geom_violin(color = "gray80")+
-        facet_wrap(facets = ~RazaPrimaria, scales = "free_x", nrow = 1)+
-        ylab("Edad en años")+
-        theme_classic()+
-        temabottom +
-        scale_fill_manual(values = coloresTransparencia)+
-        ggtitle("Edad de los agricultores")
-    } else {
-      eAgr %>%
-        rbind(data.frame(RazaPrimaria = unique(agric$RazaPrimaria),
-                         EdadAgricultor = "No hay datos")) %>%
-        mutate(Cuenta = 0) %>%
-        ggplot(aes(x = RazaPrimaria, y = Cuenta, fill = RazaPrimaria))+
-        geom_text(aes(label = EdadAgricultor))+
-        facet_wrap(~RazaPrimaria, scales = "free_x", nrow = 1)+
-        theme_classic()+
-        temabottom +
-        theme(axis.title = element_blank(),
-              axis.text = element_blank())+
-        scale_fill_manual(values = coloresTransparencia)+
-        ggtitle("Edad de los agricultores")
-    }
-  }
-
   plot2 <- function(agric){
     gInd <- agric %>%
       filter(GpoIndigenaAgricultor != "" & GpoIndigenaAgricultor != "ND") %>%
       filter(GpoIndigenaAgricultor != "Ninguno") %>%
       filter(GpoIndigenaAgricultor != "No pertenece") %>%
+      filter(GpoIndigenaAgricultor != "Español" ) %>%
       group_by(RazaPrimaria, GpoIndigenaAgricultor) %>%
       summarise(Cuenta = n())
+    gInd <- left_join(GpoIndigena, gInd, by = "GpoIndigenaAgricultor") |>
+      tidyr::pivot_wider(names_from = GpoIndigenaAgricultor, values_from = Cuenta,
+                         values_fill = 0) |>
+      filter(!is.na(RazaPrimaria))
     if(dim(gInd)[1] > 0){
-      gInd %>%
-        ggplot(aes(x = RazaPrimaria, y = Cuenta, fill = GpoIndigenaAgricultor))+
-        geom_col(position = "stack")+
-        ylab("Número de productores")+
-        facet_wrap(facets = ~RazaPrimaria, scales = "free_x", nrow = 1)+
-        theme_classic()+
-        temabottom +
-        scale_fill_manual(values = coloresTransparencia)+
-        ggtitle("Pertenencia a grupos indígenas")
+      gInd |>
+        e_charts(RazaPrimaria) |>
+        e_color(background = "#fffce2") |>
+        e_bar(Chinanteco, stack = "Indigena") |>
+        e_bar(Chol, stack = "Indigena") |>
+        e_bar(Cuicateco, stack = "Indigena") |>
+        e_bar(Huasteco, stack = "Indigena") |>
+        e_bar(Huichol, stack = "Indigena") |>
+        e_bar(Mam, stack = "Indigena") |>
+        e_bar(Maya, stack = "Indigena") |>
+        e_bar(Mazateco, stack = "Indigena") |>
+        e_bar(Mestizo, stack = "Indigena") |>
+        e_bar(Mixteco, stack = "Indigena") |>
+        e_bar(Náhuatl, stack = "Indigena") |>
+        e_bar(Otomí, stack = "Indigena") |>
+        e_bar(`Otomí tepehua`, stack = "Indigena") |>
+        e_bar(Pame, stack = "Indigena") |>
+        e_bar(Popoluca, stack = "Indigena") |>
+        e_bar(Tarahumara, stack = "Indigena") |>
+        e_bar(Tlapaneco, stack = "Indigena") |>
+        e_bar(Tojolabal, stack = "Indigena") |>
+        e_bar(Totonaco, stack = "Indigena") |>
+        e_bar(Tzeltal, stack = "Indigena") |>
+        e_bar(Tzotzil, stack = "Indigena") |>
+        e_bar(Zapoteco, stack = "Indigena") |>
+        e_title("Número de agricultores que pertenecen a grupos indígenas") |>
+        e_tooltip(trigger = "item") |>
+        e_grid(right = '15%') |>
+        e_legend(type = 'scroll', orient = 'vertical',
+                 right = '5', top = '10%') |>
+        e_toolbox_feature('saveAsImage')
     } else {
-      gInd %>%
-        rbind(data.frame(RazaPrimaria = unique(agric$RazaPrimaria),
-                         GpoIndigenaAgricultor = "No hay datos",
-                         Cuenta = 0)) %>%
-        ggplot(aes(x = RazaPrimaria, y = Cuenta, fill = GpoIndigenaAgricultor))+
-        geom_text(aes(label = GpoIndigenaAgricultor))+
-        facet_wrap(facets = ~RazaPrimaria, scales = "free_x", nrow = 1)+
-        theme_classic()+
-        theme(axis.text = element_blank(),
-              axis.title = element_blank())+
-        temabottom +
-        ggtitle("Pertenencia a grupos indígenas")
+      gInd |>
+        e_chart(RazaPrimaria) |>
+        e_color(background = "#fffce2") |>
+        e_graphic_g(type = 'text', rotation = 0,
+                    left = 'center', top = 'center',
+                    bounding = 'raw', right = 110,
+                    bottom = 110, z = 100,
+                    style = list(
+                      fill = '#000',
+                      text = 'No hay datos',
+                      font = 'bold 36px sans-serif'
+                    )
+        ) |>
+        e_title("Número de agricultores que pertenecen a grupos indígenas")
+
     }
   }
 
@@ -83,10 +79,11 @@ plotAgricultor <- function(maizSelecto){
   agric <- maizSelecto %>%
     select(Id, RazaPrimaria, GpoIndigenaAgricultor:EdadAgricultor)
 
-  p1 <- plot1(agric)
+  #p1 <- plot1(agric)
 
   p2 <- plot2(agric)
+  p2 <- e_flip_coords(p2)
 
-  pf <- ggpubr::ggarrange(p1, p2, nrow = 1)
-  return(pf)
+  #pf <- ggpubr::ggarrange(p1, p2, nrow = 1)
+  return(p2)
 }

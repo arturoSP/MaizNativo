@@ -6,11 +6,12 @@
 #' @import fullPage
 #' @import shinycssloaders
 #' @import leaflet
-#' @import plotly
+#' @import echarts4r
 #' @importFrom magrittr %>%
 #'
 #' @noRd
 app_ui <- function(request) {
+  library(echarts4r)
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
@@ -126,23 +127,27 @@ app_ui <- function(request) {
         pageContainer(
           h2("Características de tu selección:", class = "header dark shadow-dark"),
           tabsetPanel(
-            tabPanel("Granos",
-                     withSpinner(plotOutput("grafGranos", height = "600px"),
-                                 type = 1)),
+            tabPanel("Color del grano",
+                     withSpinner(echarts4rOutput("grafGranos1", height = "600px"))),
+            tabPanel("Caracteristicas del grano",
+                     withSpinner(echarts4rOutput("grafGranos2", height = "600px"))),
             tabPanel("Mazorcas",
-                     withSpinner(plotOutput("grafMazorcas", height = "600px"),
+                     withSpinner(echarts4rOutput("grafMazorcas", height = "600px"),
                                  type = 1)),
             tabPanel("Agricultores",
-                     withSpinner(plotOutput("grafAgricultores", height = "600px"),
+                     withSpinner(echarts4rOutput("grafAgricultores", height = "600px"),
                                  type = 1)),
-            tabPanel("Pros y contras",
-                     withSpinner(plotOutput("grafProCon", height = "600px"),
+            tabPanel("Usos del grano",
+                     withSpinner(echarts4rOutput("grafUsos1", height = "600px"),
                                  type = 1)),
-            tabPanel("Usos principales",
-                     withSpinner(plotlyOutput("grafUsos1", height = "600px"),
+            tabPanel("Usos  de la planta",
+                     withSpinner(echarts4rOutput("grafUsos2", height = "600px"),
                                  type = 1)),
-            tabPanel("Usos  del grano",
-                     withSpinner(plotlyOutput("grafUsos2", height = "600px"),
+            tabPanel("Opiniones a favor",
+                     withSpinner(echarts4rOutput("grafProCon1", height = "600px"),
+                                 type = 1)),
+            tabPanel("Opiniones en contra",
+                     withSpinner(echarts4rOutput("grafProCon2", height = "600px"),
                                  type = 1))
           ),
           h4(class = "small footer",

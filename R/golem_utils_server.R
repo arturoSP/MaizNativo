@@ -1,19 +1,44 @@
 #' lectura de datos ----
 #'
+#' @importFrom tidyr tibble
 #' @noRd
 #'
-# lectura de base de datos ----
+# lectura de bases de datos ----
+GpoIndigena <- tidyr::tibble(RazaPrimaria = "Desconocido",
+                          Chinanteco = 0, Chol = 0, Cuicateco = 0,
+                          Huasteco = 0, Huichol = 0, Mam = 0, Maya = 0,
+                          Mazateco = 0, Mestizo = 0, Mixteco = 0, Náhuatl = 0,
+                          Otomí = 0, `Otomí tepehua` = 0, Pame = 0, Popoluca = 0,
+                          Tarahumara = 0, Tlapaneco = 0, Tojolabal = 0, Totonaco = 0,
+                          Tzeltal = 0, Tzotzil = 0, Zapoteco = 0, Zoque = 0)
+
 bdMaiz <- read.csv("data/bdMaiz.csv")
 
+GpoIndigena <- data.frame(#RazaPrimaria = "Desconocido",
+                          GpoIndigenaAgricultor = c("Chinanteco", "Chol", "Cuicateco",
+                                                    "Huasteco", "Huichol", "Mam", "Maya",
+                                                    "Mazateco", "Mestizo", "Mixteco",
+                                                    "Náhuatl", "Otomí", "Otomí tepehua",
+                                                    "Pame", "Popoluca", "Tarahumara",
+                                                    "Tlapaneco", "Tojolabal", "Totonaco",
+                                                    "Tzeltal", "Tzotzil", "Zapoteco", "Zoque"))
+
+ComplRaci <- c("Chapalote", "Cónico", "Dentados tropicales", "Ocho hileras",
+               "Sierra de Chihuahua", "Tropicales precoces", "Tropicales tardíos",
+               "No asociadas a un complejo racial")
+
+ComplText <- readLines("./inst/app/www/ComplejoTodo.txt")
+
+# Diseño de gráficos ----
 #' propiedades gráficas
 #'
 #' @noRd
 #' @import ggplot2
-
 temaright <- ggplot2::theme(legend.position = "right",
                    axis.title.x = ggplot2::element_blank(),
                    axis.text.x = ggplot2::element_blank(),
                    text = ggplot2::element_text(size = 14))
+
 #' propiedades gráficas
 #'
 #' @noRd
@@ -40,48 +65,15 @@ coloresMapa2 <- c("#ffce96", "#d448b6", "#ff9081", "#a13437", "#f59b3f",
                   "#88d8fd", "#38a3d7", "#5c3468", "#ff8be6", "#575757",
                   "#404040", "#b5fe7a", "#0c609f", "#d64331")
 
-#
-# pr19 <- unique(bdMaiz$RazaPrimaria)[11:29]
-# [1] "Olotillo"                "Cónico Norteño"          "Tabloncillo Perla"
-# [4] "Cacahuacintle"           "Azul"                    "Palomero Toluqueño"
-# [7] "Cristalino de Chihuahua" "Tuxpeño Norteño"         "Tabloncillo"
-# [10] "Celaya"                  "Reventador"              "Pepitilla"
-# [13] "Elotes Occidentales"     "Dulcillo del Noroeste"   "Arrocillo Amarillo"
-# [16] "Dulce"                   "Zamorano Amarillo"       "Mushito"
-# [19] "Vandeño"
-#
-# bdMaiz[bdMaiz$RazaPrimaria == "Olotillo",c(1:3)] # 94
-# head(bdMaiz[bdMaiz$RazaPrimaria == "Cónico Norteño",c(1:3)]) # 181
-# head(bdMaiz[bdMaiz$RazaPrimaria == "Tabloncillo Perla",c(1:3)]) # 192
-# head(bdMaiz[bdMaiz$RazaPrimaria == "Cacahuacintle",c(1:3)]) # 230
-# head(bdMaiz[bdMaiz$RazaPrimaria == "Azul",c(1:3)]) # 236
-# head(bdMaiz[bdMaiz$RazaPrimaria == "Palomero Toluqueño",c(1:3)]) # 247
-# head(bdMaiz[bdMaiz$RazaPrimaria == "Cristalino de Chihuahua",c(1:3)]) # 255
-# head(bdMaiz[bdMaiz$RazaPrimaria == "Tuxpeño Norteño",c(1:3)]) # 263
-# head(bdMaiz[bdMaiz$RazaPrimaria == "Tabloncillo",c(1:3)]) # 277
-# head(bdMaiz[bdMaiz$RazaPrimaria == "Celaya",c(1:3)]) # 285
-# head(bdMaiz[bdMaiz$RazaPrimaria == "Reventador",c(1:3)]) # 299
-# head(bdMaiz[bdMaiz$RazaPrimaria == "Pepitilla",c(1:3)]) # 319
-# head(bdMaiz[bdMaiz$RazaPrimaria == "Elotes Occidentales",c(1:3)]) # 342
-# head(bdMaiz[bdMaiz$RazaPrimaria == "Dulcillo del Noroeste",c(1:3)]) # 402
-# head(bdMaiz[bdMaiz$RazaPrimaria == "Arrocillo Amarillo",c(1:3)]) # 529
-# head(bdMaiz[bdMaiz$RazaPrimaria == "Dulce",c(1:3)]) # 589
-# head(bdMaiz[bdMaiz$RazaPrimaria == "Zamorano Amarillo",c(1:3)]) # 613
-# head(bdMaiz[bdMaiz$RazaPrimaria == "Mushito",c(1:3)]) # 621
-# head(bdMaiz[bdMaiz$RazaPrimaria == "Vandeño",c(1:3)]) # 659
-#
-# maizSelecto <- bdMaiz[c(94, 181, 192, 230, 236, 249, 255, 263, 277, 285,
-#          299, 319, 342, 2413, 524, 584, 608, 616, 654),]
-#
-
+# Funciones ----
 #' función para mapeo
 #'
 #' @noRd
 #' @import leaflet
+#' @import dplyr
 #' @importFrom magrittr %>%
-#' @importFrom dplyr left_join
 #'
-# función para mapeo ----
+## función para mapeo ----
 mapea <- function(maizSelecto){
   maizSelecto <- maizSelecto[maizSelecto$ValidacionGeografica != "Inconsistente",]
 
@@ -115,10 +107,11 @@ mapea <- function(maizSelecto){
 #' función para filtrar
 #'
 #' @noRd
+#' @import dplyr
 #' @importFrom magrittr %>%
-#' @importFrom dplyr select
+#' @importFrom stringr str_wrap
 #'
-# función para filtrar ----
+## función para filtrar ----
 selecta <- function(database, complejo = "Todos", raza = "Todos"){
   maizBD <- database %>%
     dplyr::select(Id, ComplejoRacial, RazaPrimaria, Estado,
@@ -134,14 +127,13 @@ selecta <- function(database, complejo = "Todos", raza = "Todos"){
     )
   maizBD <- maizBD[maizBD$ComplejoRacial %in% complejo,]
   maizBD <- if(any("Todos" %in% raza)){maizBD} else{maizBD[maizBD$RazaPrimaria %in% raza,]}
+  maizBD$RazaPrimaria <- stringr::str_wrap(maizBD$RazaPrimaria, width = 12)
 
   return(maizBD)
 }
 
-ComplRaci <- c("Chapalote", "Cónico", "Dentados tropicales", "Ocho hileras",
-               "Sierra de Chihuahua", "Tropicales precoces", "Tropicales tardíos",
-               "No asociadas a un complejo racial")
-
-ComplText <- readLines("./inst/app/www/ComplejoTodo.txt")
-
-
+# maizSelecto <- selecta(bdMaiz, "Sierra de Chihuahua", c("Azul", "Cristalino de Chihuahua", "Gordo"))
+# maizSelecto <- selecta(bdMaiz, "Tropicales tardíos", "Motozinteco")
+# maizSelecto <- selecta(bdMaiz, "Tropicales tardíos", c("Motozinteco", "Olotillo"))
+# maizSelecto <- selecta(bdMaiz, "Dentados tropicales", c("Tepecintle", "Zapalote Grande"))
+# maizSelecto <- selecta(bdMaiz, "Cónico", c("Dulce", "Arrocillo Amarillo"))

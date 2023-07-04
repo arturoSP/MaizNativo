@@ -6,13 +6,13 @@
 #'
 #' @noRd
 #' @import dplyr
-#' @import ggplot2
+#' @import echarts4r
 #' @importFrom stringr str_detect
+#' @importFrom stringr str_to_sentence
 #' @importFrom tidyr pivot_longer
-#' @importFrom ggpubr ggarrange
 #' @importFrom magrittr %>%
 #'
-## data de granos ----
+
 plotGrano <- function(maizSelecto){
   granosCuant <- maizSelecto %>%
     select(Id, RazaPrimaria, GranosHilera:GranoLongitud) %>%
@@ -23,7 +23,7 @@ plotGrano <- function(maizSelecto){
                             levels = c("GranoGrosor",
                                        "GranoLongitud", "GranoAnchura",
                                        "GranosHilera"),
-                            labels = c("Grosor", "Longitud", "Anchura", "Granos por hilera"),
+                            labels = c("Grosor", "Longitud", "Anchura", "Granos por\nhilera"),
                             ordered = T))
   granosCuant <- if(dim(granosCuant)[1] > 0){
     granosCuant
@@ -40,80 +40,94 @@ plotGrano <- function(maizSelecto){
     select(Id, RazaPrimaria, ColorGrano) %>%
     filter(ColorGrano != "ND")
 
-  granosCuali$`amarillo` <- str_detect(granosCuali$ColorGrano, "amarillo \\(B\\)")
-  granosCuali$`amarillo claro` <- str_detect(granosCuali$ColorGrano, "amarillo claro")
-  granosCuali$`amarillo medio` <- str_detect(granosCuali$ColorGrano, "amarillo medio")
-  granosCuali$`amarillo naranja` <- str_detect(granosCuali$ColorGrano, "amarillo naranja \\(F\\)")
-  granosCuali$`azul` <- str_detect(granosCuali$ColorGrano, "azul \\(K\\)")
-  granosCuali$`azul oscuro` <- str_detect(granosCuali$ColorGrano, "azul oscuro \\(L\\)")
-  granosCuali$`blanco` <- str_detect(granosCuali$ColorGrano, "blanco \\(A\\)")
-  granosCuali$`blanco cremoso` <- str_detect(granosCuali$ColorGrano, "blanco cremoso")
-  granosCuali$`blanco puro` <- str_detect(granosCuali$ColorGrano, "blanco puro \\(H\\)")
-  granosCuali$`café` <- str_detect(granosCuali$ColorGrano, "café")
-  granosCuali$`crema` <- str_detect(granosCuali$ColorGrano, "crema")
-  granosCuali$`jaspeado` <- str_detect(granosCuali$ColorGrano, "jaspeado")
-  granosCuali$`morado` <- str_detect(granosCuali$ColorGrano, "morado")
-  granosCuali$`naranja` <- str_detect(granosCuali$ColorGrano, "naranja")
-  granosCuali$`negro` <- str_detect(granosCuali$ColorGrano, "negro")
-  granosCuali$`rojo` <- str_detect(granosCuali$ColorGrano, "rojo \\(I")
-  granosCuali$`rojo naranja` <- str_detect(granosCuali$ColorGrano, "rojo naranja \\(J")
-  granosCuali$`rojo oscuro` <- str_detect(granosCuali$ColorGrano, "rojo oscuro")
-  granosCuali$`rosa` <- str_detect(granosCuali$ColorGrano, "rosa")
+  granosCuali$`amarillo` <- stringr::str_detect(granosCuali$ColorGrano, "amarillo \\(B\\)")
+  granosCuali$`amarillo claro` <- stringr::str_detect(granosCuali$ColorGrano, "amarillo claro")
+  granosCuali$`amarillo medio` <- stringr::str_detect(granosCuali$ColorGrano, "amarillo medio")
+  granosCuali$`amarillo naranja` <- stringr::str_detect(granosCuali$ColorGrano, "amarillo naranja \\(F\\)")
+  granosCuali$`azul` <- stringr::str_detect(granosCuali$ColorGrano, "azul \\(K\\)")
+  granosCuali$`azul oscuro` <- stringr::str_detect(granosCuali$ColorGrano, "azul oscuro \\(L\\)")
+  granosCuali$`blanco` <- stringr::str_detect(granosCuali$ColorGrano, "blanco \\(A\\)")
+  granosCuali$`blanco cremoso` <- stringr::str_detect(granosCuali$ColorGrano, "blanco cremoso")
+  granosCuali$`blanco puro` <- stringr::str_detect(granosCuali$ColorGrano, "blanco puro \\(H\\)")
+  granosCuali$`café` <- stringr::str_detect(granosCuali$ColorGrano, "café")
+  granosCuali$`crema` <- stringr::str_detect(granosCuali$ColorGrano, "crema")
+  granosCuali$`jaspeado` <- stringr::str_detect(granosCuali$ColorGrano, "jaspeado")
+  granosCuali$`morado` <- stringr::str_detect(granosCuali$ColorGrano, "morado")
+  granosCuali$`naranja` <- stringr::str_detect(granosCuali$ColorGrano, "naranja")
+  granosCuali$`negro` <- stringr::str_detect(granosCuali$ColorGrano, "negro")
+  granosCuali$`rojo` <- stringr::str_detect(granosCuali$ColorGrano, "rojo \\(I")
+  granosCuali$`rojo naranja` <- stringr::str_detect(granosCuali$ColorGrano, "rojo naranja \\(J")
+  granosCuali$`rojo oscuro` <- stringr::str_detect(granosCuali$ColorGrano, "rojo oscuro")
+  granosCuali$`rosa` <- stringr::str_detect(granosCuali$ColorGrano, "rosa")
 
   granosCuali <- granosCuali[,-3]
 
-  granosColor <- granosCuali %>%
+  granosCuali <- granosCuali %>%
     group_by(RazaPrimaria) %>%
     summarise(across(.cols = c(amarillo:rosa), .fns = sum)) %>%
-    tidyr::pivot_longer(cols = c(amarillo:rosa), names_to = "Color", values_to = "Valor") %>%
-    group_by(RazaPrimaria) %>%
-    reframe(Total = sum(Valor))
+    tidyr::pivot_longer(cols = c(amarillo:rosa), names_to = "Color", values_to = "Valor") |>
+    mutate(Color = stringr::str_to_sentence(Color))
+  granosCualiT <- granosCuali |>
+    group_by(RazaPrimaria) |>
+    summarise(Total = sum(Valor))
 
-  coloresPaleta <- c("#FBEC5D", "#FFF380", "#FFE66D", "#FFA542", "#00BFFF",
-                              "#0000FF", "#FFFFFF", "#FAFAD2", "#FFFAFA", "#A52A2A",
-                              "#FFF8DC", "#D1D1D1", "#800080", "#FFA500", "#000000",
-                              "#FF0000", "#FF4500", "#8B0000", "#FFC0CB")
+  granosCuali <- granosCuali |>
+    inner_join(granosCualiT, by = "RazaPrimaria") %>%
+    transmute(RazaPrimaria,
+              Color,
+              Valor = round(Valor / Total, 2))
 
-  p1 <- granosCuali %>%
-    group_by(RazaPrimaria) %>%
-    summarise(across(.cols = c(amarillo:rosa), .fns = sum)) %>%
-    tidyr::pivot_longer(cols = c(amarillo:rosa), names_to = "Color", values_to = "Valor") %>%
-    left_join(granosColor) %>%
-    mutate(Porcentaje = Valor / Total * 100) %>%
-    ggplot(aes(x = RazaPrimaria, y = Porcentaje, fill = Color))+
-    geom_col(color = "gray80", alpha = 0.7)+
-    facet_wrap(~RazaPrimaria, nrow = 1, scales = "free_x")+
-    scale_fill_manual(values = coloresPaleta)+
-    theme_classic()+
-    temabottom+
-    ggtitle("Color del grano")+
-    ylab("Composición de las muestras [%]")
+  p1 <- granosCuali |>
+    group_by(RazaPrimaria) |>
+    e_chart(Color, timeline = TRUE) |>
+    e_color(background = "#fffce2") |>
+    e_pie(Valor,
+          percentPrecision = 0,
+          label = list(show = FALSE,
+                       position = "outside",
+                       formatter = '{b}: {d}%')) |>
+    e_tooltip(formatter = e_tooltip_choro_formatter("percent")) |>
+    e_theme_custom('{"color":["#FBEC5D", "#FFF380", "#FFE66D", "#FFA542",
+                              "#00BFFF", "#0000FF", "#FFFFFF", "#FAFAD2",
+                              "#FFFAFA", "#A52A2A", "#FFF8DC", "#D1D1D1",
+                              "#800080", "#FFA500", "#000000", "#FF0000",
+                              "#FF4500", "#8B0000", "#FFC0CB"]}') |>
+    e_toolbox_feature('saveAsImage') |>
+    e_title("Color de los granos")
+
 
   p2 <- if(granosCuant[1,1] != 0){
-    granosCuant %>%
-      ggplot(aes(x = Metrica, y = Valor, fill = RazaPrimaria))+
-      geom_violin(color = "gray80")+
-      facet_wrap(facets = ~Metrica, scales = "free", nrow = 1)+
-      ylab("[cm]")+
-      theme_classic()+
-      temabottom+
-      scale_fill_manual(values = coloresTransparencia)+
-      ggtitle("Características del grano")
+    granosCuant |>
+      group_by(RazaPrimaria) |>
+      e_chart(Metrica, timeline = TRUE) |>
+      e_color(background = "#fffce2") |>
+      e_scatter(Valor, colorBy = 'data',
+                symbol_size = 25,
+                legend = FALSE) |>
+      #e_theme_custom('{"color":["#FBEC5D", "#0000FF", "#800080","#FF4500"]}') |>
+      e_toolbox_feature('saveAsImage') |>
+      e_title("Características del grano")
   } else {
-    granosCuant %>%
-      ggplot(aes(x = Metrica, y = Valor, fill = RazaPrimaria))+
-      geom_text(aes(label = "No hay datos"))+
-      facet_wrap(facets = ~Metrica, scales = "free", nrow = 1)+
-      theme_classic()+
-      temabottom+
-      theme(axis.text = element_blank(),
-            axis.title = element_blank())+
-      scale_fill_manual(values = coloresTransparencia)+
-      ggtitle("Características del grano")
+    granosCuant |>
+      group_by(RazaPrimaria) |>
+      e_chart(Metrica, timeline = TRUE) |>
+      e_color(background = "#fffce2") |>
+      e_graphic_g(type = 'text', rotation = 0,
+                  left = 'center', top = 'center',
+                  bounding = 'raw', right = 110,
+                  bottom = 110, z = 100,
+                  style = list(
+                    fill = '#000',
+                    text = 'No hay datos',
+                    font = 'bold 36px sans-serif'
+                  )
+                  ) |>
+      e_title("Características del grano")
   }
 
+  p2 <- e_flip_coords(p2)
 
-
-  pf <- ggpubr::ggarrange(p1, p2)
+  pf <- list(p1, p2)
   return(pf)
+
 }

@@ -6,13 +6,11 @@
 #'
 #' @noRd
 #' @import dplyr
-#' @import ggplot2
+#' @import echarts4r
 #' @import tm
 #' @importFrom stringr str_sub
 #' @importFrom stringr str_replace_all
 #' @importFrom tidyr pivot_longer
-#' @importFrom ggpubr ggarrange
-#' @importFrom ggwordcloud geom_text_wordcloud
 #' @importFrom magrittr %>%
 #'
 # data pros y contras ----
@@ -28,11 +26,11 @@ plotProCon <- function(maizSelecto){
   CorpAFavor <- Corpus(VectorSource(AFavor))
   CorpAFavor <- tm_map(CorpAFavor, removePunctuation)
   CorpAFavor[["1"]][["content"]] <- if(dim(AFavor)[1] > 1){
-    str_sub(CorpAFavor[["1"]][["content"]], start = 2)
+    stringr::str_sub(CorpAFavor[["1"]][["content"]], start = 2)
   } else {
     CorpAFavor[["1"]][["content"]]
   }
-  CorpAFavor[["1"]][["content"]] <- str_replace_all(CorpAFavor[["1"]][["content"]], "\n", "")
+  CorpAFavor[["1"]][["content"]] <- stringr::str_replace_all(CorpAFavor[["1"]][["content"]], "\n", "")
   CorpAFavor <- tm_map(CorpAFavor, tolower)
   CorpAFavor <- tm_map(CorpAFavor, removeWords, c("y", "que", "del", "el", "La",
                                                   "la", "en", "de", "por", "muy",
@@ -53,15 +51,16 @@ plotProCon <- function(maizSelecto){
   MatrAFavor[1,2] <- ifelse(MatrAFavor[1,2] == "character0",
                             "No hubo\nregistros",
                             MatrAFavor[1,2])
-  p1 <- ggplot(MatrAFavor,
-               aes(label = palabra, size = as.numeric(cuenta), color = as.numeric(cuenta)))+
-    ggwordcloud::geom_text_wordcloud()+
-    scale_size_area(max_size = 15)+
-    scale_color_gradient2(low = "darkred", mid = "#FFDB48", high = "purple")+
-    theme(panel.background = element_rect(fill = "white",
-                                          color = "black"),
-          title = element_text(size = 12, face = "bold"))+
-    ggtitle("A los productores les gusta:")
+
+  p1 <- MatrAFavor |>
+    e_chart() |>
+    e_color(background = "#fffce2") |>
+    e_cloud(word = palabra, freq = cuenta, shape = "diamond", sizeRange = c(20,60),
+            textStyle = list(color = "#3d5fec"),
+            emphasis = list(focus = "self",
+                            textStyle = list(textShadowBlur = 3, textShadowColor = "#a000c7"))) |>
+    e_title("A los productores les gusta:") |>
+    e_toolbox_feature('saveAsImage')
 
   EnContra <- agric %>%
     filter(EnContra != "") %>%
@@ -71,11 +70,11 @@ plotProCon <- function(maizSelecto){
   CorpEnContra <- Corpus(VectorSource(EnContra))
   CorpEnContra <- tm_map(CorpEnContra, removePunctuation)
   CorpEnContra[["1"]][["content"]] <- if(dim(AFavor)[1] > 1){
-    str_sub(CorpEnContra[["1"]][["content"]], start = 2)
+    stringr::str_sub(CorpEnContra[["1"]][["content"]], start = 2)
   } else {
     CorpEnContra[["1"]][["content"]]
   }
-  CorpEnContra[["1"]][["content"]] <- str_replace_all(CorpEnContra[["1"]][["content"]], "\n", "")
+  CorpEnContra[["1"]][["content"]] <- stringr::str_replace_all(CorpEnContra[["1"]][["content"]], "\n", "")
   CorpEnContra <- tm_map(CorpEnContra, tolower)
   CorpEnContra <- tm_map(CorpEnContra, removeWords, c("y", "que", "del", "el",
                                                       "la", "en", "de", "sin", "lo",
@@ -102,18 +101,19 @@ plotProCon <- function(maizSelecto){
     MatrEnContra
   }
   MatrEnContra[1,2] <- ifelse(MatrEnContra[1,2] == "character0",
-                            "No hubo\nregistros",
-                            MatrEnContra[1,2])
-  p2 <- ggplot(MatrEnContra,
-               aes(label = palabra, size = as.numeric(cuenta), color = as.numeric(cuenta)))+
-    ggwordcloud::geom_text_wordcloud()+
-    scale_size_area(max_size = 15)+
-    scale_color_gradient2(low = "darkred", mid = "#FFDB48", high = "purple")+
-    theme(panel.background = element_rect(fill = "white",
-                                          color = "black"),
-          title = element_text(size = 12, face = "bold"))+
-    ggtitle("A los productores no les gusta:")
+                              "No hubo\nregistros",
+                              MatrEnContra[1,2])
 
-  pf <- ggpubr::ggarrange(p1, p2, nrow = 1)
+  p2 <- MatrEnContra |>
+    e_chart() |>
+    e_color(background = "#fffce2") |>
+    e_cloud(word = palabra, freq = cuenta, shape = "diamond", sizeRange = c(20,60),
+            textStyle = list(color = "#a000c7"),
+            emphasis = list(focus = "self",
+                            textStyle = list(textShadowBlur = 3, textShadowColor = "#3d5fec"))) |>
+    e_title("A los productores no les gusta:") |>
+    e_toolbox_feature('saveAsImage')
+
+  pf <- list(p1, p2)
   return(pf)
 }
