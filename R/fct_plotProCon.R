@@ -20,8 +20,7 @@ plotProCon <- function(maizSelecto){
 
   AFavor <- agric %>%
     filter(AFavor != "") %>%
-    select(AFavor) %>%
-    as.vector()
+    select(AFavor)
 
   CorpAFavor <- Corpus(VectorSource(AFavor))
   CorpAFavor <- tm_map(CorpAFavor, removePunctuation)
@@ -68,8 +67,7 @@ plotProCon <- function(maizSelecto){
 
   EnContra <- agric %>%
     filter(EnContra != "") %>%
-    select(EnContra) %>%
-    as.vector()
+    select(EnContra)
 
   CorpEnContra <- Corpus(VectorSource(EnContra))
   CorpEnContra <- tm_map(CorpEnContra, removePunctuation)

@@ -2,10 +2,10 @@
 \alias{bdMaiz}
 \docType{data}
 \title{
-%%   ~~ data name/kind ... ~~
+Proyecto Global de Maíces
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of the dataset. ~~
+A partir de la base de datos del Proyecto Global de Maíces Nativos (con un corte a 2010), puntos de verificación de maíces del INEGI, conjunto de datos vectoriales de la carta de uso de suelo y vegetación, caminos rurales y federales, distrito de riego y población indígena; se construyó una cobertura geográfico-espacial que delimita las áreas que son Centros de Origen y Centros de Diversidad Genética del maíz en México.
 }
 \usage{data("bdMaiz")}
 \format{
@@ -97,9 +97,6 @@
     \item{\code{FormaMazorca}}{Forma que tiene la mazorca, es información útil para la caracterización de las variedades. Se clasifican en cilíndrica, cónica y esférica.}
     \item{\code{TipoGrano}}{Tipos y o texturas de grano de maíz, es información útil para la caracterización de las variedades. Se clasifican principalmente en ceroso, cristalino, dentado, dulce, harinoso y reventador.}
   }
-}
-\details{
-%%  ~~ If necessary, more details than the __description__ above ~~
 }
 \source{
 \href{https://www.biodiversidad.gob.mx/diversidad/proyectoMaices}{Proyecto global de maíces nativos} (CONABIO, 2017).
