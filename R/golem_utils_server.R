@@ -93,7 +93,7 @@ mapea <- function(maizSelecto){
 
   maizSelecto %>%
     leaflet() %>%
-    addProviderTiles(providers$Stamen.Terrain) %>%
+    addProviderTiles(providers$Esri.NatGeoWorldMap) %>%
     addAwesomeMarkers(lat = maizSelecto$Latitud, lng = maizSelecto$Longitud,
                       icon = icons,
                       group = "maizSelecto",
